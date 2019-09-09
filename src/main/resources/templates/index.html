@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			
+			
+			body {
+				background: url(img/bg.jpg) no-repeat center center fixed;
+                -webkit-background-size: cover;
+				-o-background-size: cover;                
+				background-size: cover;
+			}
+			
+			.login_box{
+				width: 400px;
+				height: 380px;
+				margin: 0 auto;
+				margin-top: 170px;
+				background: rgba(255,255,255,0.8);
+				border-radius: 5px;
+			}
+			.account_login{
+				font-size: 20px;
+				margin-left: 25px;
+				padding-top: 30px;
+				color: #4E4E4E;
+			}
+			.username{
+				width: 315px;
+				height: 30px;
+				padding-left: 30px;
+				margin-left: 25px;
+				margin-top: 35px;
+				border: 1px solid #A5AAAD;
+				background: url(img/username.png) no-repeat;
+				background-size: 30px 33px;
+			}
+			.password{
+				width: 315px;
+				height: 30px;
+				padding-left: 30px;
+				margin-left: 25px;
+				margin-top: 35px;
+				border: 1px solid #A5AAAD;
+				background: url(img/password.png) no-repeat;
+				background-size: 30px 33px;
+			}
+			
+			.type{
+				width: 345px;
+				height: 30px;
+				padding-left: 30px;
+				margin-left: 25px;
+				margin-top: 35px;
+				border: 1px solid #A5AAAD;
+			}
+			
+			input:focus{
+			    border-style:solid;
+			    border-color: #03a9f4;
+				box-shadow: 0 0 15px #00a0e9;}
+			
+			
+			
+			.login_btn{
+				width: 345px;
+				height: 30px;
+				margin-top: 25px;
+				margin-left: 25px;
+				background: #00a0e9;
+				border: 1px solid #00a0e9;
+				color: white;
+			}
+			.forget_password{
+					margin-top: 20px;
+			}
+			.forget_password a{
+				margin-left: 25px;
+				color: #a5aaad;
+			}
+			
+			.forget_password a:hover{
+				color: #00A0E9;
+			}
+
+			
+		</style>
+	</head>
+	<body>
+		<div>
+			<div class="wrap">
+				
+			</div>
+			<div class="login_box">
+				<p class="account_login">账号登录</p>
+					<input class="username" type="text" placeholder="用户名"/>
+					<input class="password" type="password" placeholder="密码"/>
+					<div style="color: #8D8D8D; margin-left: 25px; margin-top:20px;font-size: 0.875rem;">
+						<input type="radio" name="type" value="学生" title="学生" checked>学生&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="type" value="教师" title="教师" >教师&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="type" value="教师" title="教师" >管理员
+					</div>
+  
+					<input class="login_btn" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" type="submit"/>
+				<p class="forget_password"><a href="#">忘记密码</a></p>
+			</div>
+		</div>
+	</body>
+	
+</html>
