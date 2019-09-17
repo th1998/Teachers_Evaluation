@@ -5,12 +5,15 @@ import com.teachers.Model.Role;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class roleService {
     @Resource
     roleDao roledao;
+
     public int addRole(String roleName){
         return roledao.addRole(roleName);
     }
+    public List<Role> selectRole(){ return  roledao.selectRole();}
 }

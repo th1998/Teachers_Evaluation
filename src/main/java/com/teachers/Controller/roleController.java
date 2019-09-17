@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 public class roleController {
     @Autowired
@@ -16,7 +18,7 @@ public class roleController {
     @RequestMapping("/addRole")
     @ResponseBody
     public ResultMsg addRole(String roleName){
-        System.out.println(roleName);
+       // System.out.println(roleName);
         int i = roleservice.addRole(roleName);
         if(i>0){
             return new ResultMsg(1,"添加成功");
@@ -24,5 +26,12 @@ public class roleController {
             return new ResultMsg(2,"添加失败");
         }
 
+    }
+
+    @RequestMapping("/selectRole")
+    @ResponseBody
+    public List<Role> selectRole(){
+        List<Role> role = roleservice.selectRole();
+        return role;
     }
 }
