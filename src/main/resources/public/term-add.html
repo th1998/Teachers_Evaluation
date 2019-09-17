@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="./css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-3.4.0.min.js"></script>
-    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="./js/xadmin.js"></script>
-    <script type="text/javascript" src="./js/cookie.js"></script>
+    <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript" src="/js/cookie.js"></script>
 
   </head>
   
@@ -40,12 +40,28 @@
       </form>
     </div>
     <script>
-        layui.use(['form','layer'], function(){
-            $ = layui.jquery;
-          var form = layui.form
-          ,layer = layui.layer;
+        layui.use(['form','layer',], function(){
+            var form = layui.form;
+            var layer = layui.layer;
 
-          
+            form.on('submit(add)', function(data) {
+                var termName = $("#termName").val();
+                console.log(termName)
+                $.ajax({
+                    type:"POST",
+                    url:"/addTerm",
+                    data:{termName:termName},
+                    success:function(res){
+                        if(res.flag == 1){
+                            layer.alert(res.content);
+                            $("#termName").val("");
+                        }else{
+                            layer.alert(res.content);
+                            $("#termName").val("");
+                        }
+                    }
+                });
+            });
         });
     </script>
 
