@@ -9,12 +9,13 @@
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/xadmin.js"></script>
-    <script type="text/javascript" src="js/cookie.js"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript" src="/js/cookie.js"></script>
 
   </head>
   
   <body>
+  <div class="totle" style="display: none;"></div>
     <div class="x-nav">
       <span class="layui-breadcrumb">
         <a href="">首页</a>
@@ -34,7 +35,7 @@
       <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加院系','./faculty-add.html',400,200)"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        <span class="x-right" style="line-height:40px"></span>
       </xblock>
       <table class="layui-table x-admin">
         <thead>
@@ -47,7 +48,7 @@
             <th width="10%">操作</th></tr>
         </thead>
         <tbody>
-          <tr>
+          <!--<tr>
             <td>
               <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
             </td>
@@ -62,7 +63,7 @@
               </a>
             </td>
           </tr>
-
+-->
         </tbody>
       </table>
       <div id="page_div"></div>
@@ -70,9 +71,72 @@
 
     </div>
     <script>
+      $.ajax({
+        type:"POST",
+        url:"/deptTotle",
+        async: false,
+        success:function(res){
+          $(".totle").html(res.total);
+        }
+      });
 
 
+      var total = $(".totle").html();
+      var pageNum=1;
+      if(total%8 == 0){
+        var page = total/8;
+      }else{
+        var page = parseInt(total/8)+1;
+      }
+      $(".x-right").html("共有数据:"+total+"条 共:"+page+"页");
 
+      layui.use('laypage',function(){
+        var laypage=layui.laypage;
+
+        laypage.render({
+          elem: 'page_div',
+          count: total,
+          curr:pageNum,
+          limit:8,
+          theme:'#222222',
+          jump: function(obj, first){
+            onShow(obj.curr);
+          }
+        });
+
+      });
+
+      onShow = function(page) {
+        $.ajax({
+          url: '/deptList',
+          type: 'get',
+          data: {page: page},
+          async: false,
+          success: function (data) {
+            console.log(page);
+            var tr = "";
+            for(var i = 0;i<data.list.length;i++){
+              tr += "<tr>";
+              tr += "<th><div class='layui-unselect header layui-form-checkbox' lay-skin='primary'><i class='layui-icon'>&#xe605;</i></div></th>";
+              tr += "<th>"+data.list[i].deptId+"</th>";
+              tr += "<th>"+data.list[i].deptName+"</th>";
+              tr += "<td class='td-manage'>"+
+                      "<a title='编辑'  onclick=\'x_admin_show(\"编辑\",\"${pageContext.request.contextPath}/question_bank_update?id="+data.list[i].deptId+"\")\'>"+
+                      "<i class='layui-icon'>&#xe63c;</i>"+
+                      "</a>"+
+                      "<a title='删除'  onclick='del("+data.list[i].deptId+")'>"+
+                      "<i class='layui-icon'>&#xe640;</i>"+
+                      "</a>"+
+                      "</td>"
+              layui.jquery("tbody").html(tr);
+              layui.use('form', function(){
+                var  form = layui.form;
+                form.render("checkbox");
+              });
+            }
+          }
+        });
+      }
     </script>
 
   </body>
