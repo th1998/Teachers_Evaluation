@@ -13,7 +13,9 @@ import java.util.List;
 public class deptService {
     @Resource
     deptDao deptdao;
-
+    /*
+      @胡志航
+     */
     public int addDept(String deptName){
         return deptdao.addDept(deptName);
     }
@@ -23,9 +25,17 @@ public class deptService {
         PageInfo<Dept> page = new PageInfo<>(a);
         return page;
     }
-
+    /*
+      @唐浩
+    */
     public List<Dept> getDept(Integer page){
         List<Dept> a= deptdao.selectDept();
         return a;
+    }
+    /*
+       @张彤
+     */
+    public List<Dept> findDept(){
+        return deptdao.findDept();
     }
 }

@@ -9,7 +9,9 @@ import javax.annotation.Resource;
 public class classService {
     @Resource
     classDao classdao;
-
+    /*
+       @李胤江
+    */
     public int addclass(String className){
         return classdao.addClass(className);
     };

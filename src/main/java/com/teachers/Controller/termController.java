@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class termController {
     @Autowired
     private termService termservice;
-
+    /*
+       @余时南  添加学期
+       * */
     @RequestMapping("/addTerm")
     @ResponseBody
     public ResultMsg add_term(String termName){

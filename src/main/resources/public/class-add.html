@@ -40,7 +40,7 @@
       </form>
     </div>
     <script>
-        layui.use(['form','layer',], function(){
+        layui.use(['form','layer'], function(){
             var form = layui.form;
             var layer = layui.layer;
 
@@ -53,14 +53,17 @@
                     data:{className:className},
                     success:function(res){
                         if(res.flag == 1){
-                            layer.msg(res.content);
-                            $("#className").val("");
+                            layer.msg(res.content, {icon: 1,time: 2000 }, function(){
+                                $("#className").val("");
+                            });
                         }else{
-                            layer.msg(res.content);
-                            $("#className").val("");
+                            layer.msg(res.content, {icon: 2,time: 2000 }, function(){
+                                $("#className").val("");
+                            });
                         }
                     }
                 });
+                return false;
             });
         });
     </script>

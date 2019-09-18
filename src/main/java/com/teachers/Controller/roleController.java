@@ -14,7 +14,9 @@ import java.util.List;
 public class roleController {
     @Autowired
     private roleService roleservice;
-
+    /*
+      @唐浩 添加角色
+    * */
     @RequestMapping("/addRole")
     @ResponseBody
     public ResultMsg addRole(String roleName){
@@ -27,7 +29,9 @@ public class roleController {
         }
 
     }
-
+    /*
+      @张彤 查询角色
+    * */
     @RequestMapping("/selectRole")
     @ResponseBody
     public List<Role> selectRole(){

@@ -16,26 +16,33 @@ import java.util.List;
 public class deptController {
     @Autowired
     private deptService deptservice;
-
+    /*
+       @胡志航  添加院系
+    */
     @RequestMapping("/addDept")
     @ResponseBody
     public ResultMsg addRole(String deptName){
         System.out.println(deptName);
         int i = deptservice.addDept(deptName);
+        System.out.println("controll :"+i);
         if(i>0){
             return new ResultMsg(1,"添加成功");
-        }else{
-            return new ResultMsg(2,"添加失败");
         }
-    }
+            return new ResultMsg(2,"添加失败");
 
+    }
+    /*
+        @唐浩  院系列表
+    */
     @RequestMapping("/deptTotle")
     @ResponseBody
     public PageInfo<Dept> deptTotle() {
         PageInfo<Dept> page = deptservice.selectDept();
         return page;
     }
-
+    /*
+       @唐浩  院系列表
+    */
     @RequestMapping("/deptList")
     @ResponseBody
     public PageInfo<Dept> deptList(Integer page){
@@ -46,4 +53,13 @@ public class deptController {
         return in;
     }
 
+    /*
+      @张彤  院系查询
+    */
+    @RequestMapping("/findDept")
+    @ResponseBody
+    public List<Dept> findDept(){
+        List<Dept> depts=deptservice.findDept();
+        return depts;
+    }
 }

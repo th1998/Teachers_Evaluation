@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="x-admin-sm">
+<html class="x-admin-sm"  xmlns:th="http://www.thymeleaf.org">
   
   <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery-3.4.0.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/js/xadmin.js"></script>
     <script type="text/javascript" src="/js/cookie.js"></script>
@@ -33,35 +33,42 @@
             </div>
 
           <div class="layui-form-label">
-              <button  class="layui-btn" lay-filter="add" lay-submit="">
+              <button  class="layui-btn" lay-filter="addDept" lay-submit>
                   添加
               </button>
           </div>
       </form>
     </div>
     <script>
-        layui.use(['form','layer',], function(){
+        layui.use(['form','layer'], function(){
+            $ = layui.jquery;
             var form = layui.form;
             var layer = layui.layer;
 
-            form.on('submit(add)', function(data) {
+            form.on('submit(addDept)', function(data) {
                 var deptName = $("#deptName").val();
                 console.log(deptName)
                 $.ajax({
                     type:"POST",
                     url:"/addDept",
                     data:{deptName:deptName},
+                    //async: false,
                     success:function(res){
+
                         if(res.flag == 1){
-                            layer.alert(res.content);
-                            $("#deptName").val("");
+                            layer.msg(res.content, {icon: 1,time: 2000 }, function(){
+                                $("#deptName").val("");
+                            });
                         }else{
-                            layer.alert(res.content);
-                            $("#deptName").val("");
+                            layer.msg(res.content, {icon: 2,time: 2000 }, function(){
+                                $("#deptName").val("");
+                            });
                         }
                     }
                 });
+                return false;
             });
+
         });
     </script>
 

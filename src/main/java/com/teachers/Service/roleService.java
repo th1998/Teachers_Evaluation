@@ -11,7 +11,9 @@ import java.util.List;
 public class roleService {
     @Resource
     roleDao roledao;
-
+    /*
+      @唐浩
+    * */
     public int addRole(String roleName){
         return roledao.addRole(roleName);
     }

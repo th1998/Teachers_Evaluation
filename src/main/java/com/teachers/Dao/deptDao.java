@@ -19,4 +19,10 @@ public interface deptDao {
     */
     @Select("select * from department")
     public List<Dept> selectDept();
+
+    /*
+      @张彤
+    */
+    @Select("select * from department")
+    public List<Dept> findDept();
 }

@@ -12,6 +12,9 @@ public class classController {
     @Autowired
     private classService clsaaservice;
 
+    /*
+     @李胤江  添加班级
+     */
     @RequestMapping("/addClass")
     @ResponseBody
     public ResultMsg addClass(String className){

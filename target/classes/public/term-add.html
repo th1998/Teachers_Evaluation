@@ -53,14 +53,18 @@
                     data:{termName:termName},
                     success:function(res){
                         if(res.flag == 1){
-                            layer.alert(res.content);
-                            $("#termName").val("");
+                            layer.msg(res.content, {icon: 1,time: 2000 }, function(){
+                                $("#termName").val("");
+                            });
                         }else{
-                            layer.alert(res.content);
-                            $("#termName").val("");
+                            layer.msg(res.content, {icon: 2,time: 2000 }, function(){
+                                $("#termName").val("");
+                            });
                         }
                     }
+
                 });
+                return false;
             });
         });
     </script>
