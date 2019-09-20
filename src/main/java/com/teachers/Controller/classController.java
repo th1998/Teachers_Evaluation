@@ -1,7 +1,10 @@
 package com.teachers.Controller;
 
+import com.github.pagehelper.PageHelper;
+
 import com.teachers.Model.ResultMsg;
 import com.teachers.Model.Class;
+import com.teachers.Model.pageBean;
 import com.teachers.Service.classService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +16,7 @@ import java.util.List;
 @Controller
 public class classController {
     @Autowired
-    private classService clsaaservice;
+    private classService classservice;
 
     /*
      @李胤江  添加班级
@@ -22,7 +25,7 @@ public class classController {
     @ResponseBody
     public ResultMsg addClass(String className){
         System.out.println(className);
-        int i = clsaaservice.addclass(className);
+        int i = classservice.addclass(className);
         if(i>0){
             return new ResultMsg(1,"添加成功");
         }else{
@@ -31,11 +34,47 @@ public class classController {
 
     }
 
-
+    /*
+    * @张彤 查找班级
+    * */
     @RequestMapping("/findClass")
     @ResponseBody
     public List<Class> findClass(){
-        List<Class> classes = clsaaservice.findClass();
+        List<Class> classes = classservice.findClass();
         return classes;
+    }
+
+    //班级列表
+    @RequestMapping("/classTotle")
+    @ResponseBody
+    public pageBean classTotle() {
+        pageBean page = classservice.selectDept();
+        return page;
+    }
+
+    @RequestMapping("/classList")
+    @ResponseBody
+    public pageBean classList(Integer page){
+        PageHelper.startPage(page, 8);
+        List<Class> classes= classservice.getClass(page);
+        int i = classservice.classTotal();
+        String f = "no";
+        pageBean in = new pageBean();
+        in.setTotal(i);
+        in.setFlag(f);
+        in.setClassList(classes);
+        return in;
+    }
+
+    //删除单个班级
+    @RequestMapping("/delOneClass")
+    @ResponseBody
+    public ResultMsg delOneClass(Integer classId){
+        int i = classservice.delOneClass(classId);
+        if(i>0){
+            return new ResultMsg(1,"删除成功");
+        }else{
+            return new ResultMsg(2,"删除失败");
+        }
     }
 }

@@ -8,12 +8,10 @@ public class pageBean {
     private Integer total;
     private String flag;
     private List<Dept> deptList;
+    private List<Class> classList;
 
-    public pageBean(Integer total,String flag,List<Dept> deptList){
-        this.total = total;
-        this.flag = flag;
-        this.deptList = deptList;
-    }
+
+
     public Integer getTotal() {
         return total;
     }
@@ -36,5 +34,13 @@ public class pageBean {
 
     public void setDeptList(List<Dept> deptList) {
         this.deptList = deptList;
+    }
+
+    public List<Class> getClassList() {
+        return classList;
+    }
+
+    public void setClassList(List<Class> classList) {
+        this.classList = classList;
     }
 }

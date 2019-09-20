@@ -29,7 +29,10 @@ public class deptService {
         int t = deptdao.deptTotal();
         List<Dept> a= deptdao.selectDept();
         String f = "no";
-        pageBean page = new pageBean(t,f,a);
+        pageBean page = new pageBean();
+        page.setTotal(t);
+        page.setFlag(f);
+        page.setDeptList(a);
         return page;
     }
 
@@ -43,16 +46,13 @@ public class deptService {
 
 
 
-    public List<Dept> findOneDept(String deptName){
-        List<Dept> a= deptdao.findOneDept(deptName);
-        return a;
-    }
-    public int deptSL(String deptName){
-        return deptdao.deptSL(deptName);
+    public int delOneDept(Integer deptId){
+        return deptdao.delOneDept(deptId);
     }
 
-
-
+    /*public int delAll(String ids){
+        return deptdao.delAll(ids);
+    }*/
 
     /*
       @张彤

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -44,32 +45,44 @@ public class deptController {
 
     @RequestMapping("/deptList")
     @ResponseBody
-    public pageBean deptList(Integer page,String deptName){
+    public pageBean deptList(Integer page){
         PageHelper.startPage(page, 8);
-
-        if(deptName != null){
-            List<Dept> dept = deptservice.findOneDept(deptName);
-            int i = deptservice.deptSL(deptName);
-            String f = "yes";
-            pageBean in = new pageBean(i,f,dept);
-            return in;
-        }else{
             List<Dept> dept = deptservice.getDept(page);
             int i = deptservice.deptTotal();
             String f = "no";
-            pageBean in = new pageBean(i,f,dept);
+            pageBean in = new pageBean();
+            in.setTotal(i);
+            in.setFlag(f);
+            in.setDeptList(dept);
             return in;
+    }
+
+
+    //单个删除
+    @RequestMapping("/delOneDept")
+    @ResponseBody
+    public ResultMsg delOneDept(Integer deptId){
+        int i = deptservice.delOneDept(deptId);
+        if(i>0){
+            return new ResultMsg(1,"删除成功");
+        }else{
+            return new ResultMsg(2,"删除失败");
         }
     }
 
-    @RequestMapping("/cx")
+   /* @RequestMapping("/delAll")
     @ResponseBody
-    public List<Dept> cx(String deptName){
-        System.out.println(deptName);
-        List<Dept> l = deptservice.findOneDept(deptName);
-        return l;
-    }
+    public ResultMsg delAll(String ids){
+        System.out.println(ids);
 
+
+        int i = deptservice.delAll(ids);
+        if(i>0){
+            return new ResultMsg(1,"删除成功");
+        }else{
+            return new ResultMsg(2,"删除失败");
+        }
+    }*/
     /*
     @张彤  院系查询
   */

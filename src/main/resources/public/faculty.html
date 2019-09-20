@@ -4,8 +4,8 @@
     <title>欢迎页面-X-admin2.1</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <link rel="stylesheet" href="css/font.css">
-    <link rel="stylesheet" href="css/xadmin.css">
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
@@ -38,33 +38,18 @@
         <button class="layui-btn" onclick="x_admin_show('添加院系','./faculty-add.html',400,200)"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px"></span>
       </xblock>
-      <table class="layui-table x-admin">
+      <table class="layui-table layui-form">
         <thead>
           <tr>
             <th width="10%">
-              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+              <input type="checkbox" id="checkall" lay-filter="checkalls"  name="checkall" lay-skin="primary" >
             </th>
             <th width="10%">ID</th>
             <th width="70%">院系名</th>
             <th width="10%">操作</th></tr>
         </thead>
         <tbody>
-          <!--<tr>
-            <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
-            </td>
-            <td>1</td>
-            <td>软件学院</td>
-            <td class="td-manage">
-              <a title="编辑"  onclick="x_admin_show('编辑','member-edit.html',600,400)" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
--->
+
         </tbody>
       </table>
       <div id="page_div" style="float: right;"></div>
@@ -77,7 +62,7 @@
         url:"/deptTotle",
         async: false,
         success:function(res){
-          console.log(res)
+         // console.log(res)
           $(".totle").html(res.total);
           $(".panduan").html(res.flag);
         }
@@ -121,7 +106,7 @@
             var tr = "";
             for(var i = 0;i<data.deptList.length;i++){
               tr += "<tr>";
-              tr += "<th><div class='layui-unselect header layui-form-checkbox' lay-skin='primary'><i class='layui-icon'>&#xe605;</i></div></th>";
+              tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.deptList[i].deptId+"'></th>";
               tr += "<th>"+data.deptList[i].deptId+"</th>";
               tr += "<th>"+data.deptList[i].deptName+"</th>";
               tr += "<td class='td-manage'>"+
@@ -143,36 +128,9 @@
       }
 
 
-/*
-    layui.use(['form','layer'], function(){
-        $ = layui.jquery;
-        var form = layui.form;
-        var layer = layui.layer;
-
-        form.on('submit(search)', function(data) {
-          var deptName = $("#deptName").val();
-          console.log("deptname:  "+deptName);
-          $.ajax({
-            url: '/cx',
-            type: 'get',
-            data: {deptName: deptName},
-            async: false,
-            success: function (data) {
-              console.log(data)
-            }
-          });
-        });
-      });
-*/
-        //删除单个院系
-      layui.use(['form','layer'], function() {
-          $ = layui.jquery;
-          var form = layui.form;
-          var layer = layui.layer;
-
+          //删除单个院系
           function del(deptId) {
               console.log("id值" + deptId);
-              var result = false;
               layer.confirm('是否删除该用户', {icon: 6}, function (index) {
                   $.ajax({
                       url: '/delOneDept',
@@ -180,15 +138,97 @@
                       data: {deptId: deptId},
                       async: false,
                       success: function (res) {
-
+                        layui.use(['form','layer'], function() {
+                          var layer = layui.layer;
+                            if(res.flag == 1){
+                              layer.msg(res.content,{icon: 6,time:2000},function(){location.reload();});
+                            }else{
+                              layer.msg(res.content,{icon: 5,time:2000},function(){location.reload();});
+                            }
+                        });
                       }
                   });
               });
           }
 
+      //勾选数据列
+      var a=[];
+      layui.use('form', function() {
+        form = layui.form;
+        //全选
+        form.on('checkbox(checkalls)', function (data) {
+          var a = data.elem.checked;
+          if (a == true) {
+            $(".checkd").prop("checked", true);
+            form.render('checkbox');
+          } else {
+            $(".checkd").prop("checked", false);
+            form.render('checkbox');
+          }
+        });
 
-      });
+        //有一个未选中全选取消选中
+        form.on('checkbox(Id)', function (data) {
+          var item = $(".checkd");
+          for (var i = 0; i < item.length; i++) {
+            if (item[i].checked == false) {
+              $("#checkall").prop("checked", false);
+              form.render('checkbox');
+              break;
+            }
+          }
 
+          //如果都勾选了  勾上全选
+          var  all=item.length;
+          for (var i = 0; i < item.length; i++) {
+            if (item[i].checked == true) {
+              all--;
+            }
+          }
+          if(all==0){
+            $("#checkall").prop("checked", true);
+            form.render('checkbox');
+          }
+
+        });
+      })
+
+      //批量删除
+      function delAll(){
+        var idArr=""
+        $('input[name="checkd"]').each(function(){
+          if($(this).prop("checked")){
+            idArr=idArr+$(this).val()+",";
+          }
+        });
+
+        var ids = idArr.substr(0,idArr.length-1);
+        console.log(ids)
+
+        layer.confirm('确认要删除吗？',function(index){
+          $.ajax({
+             url: '/delAlla',
+             type: 'get',
+             data: {ids: ids},
+             async: false,
+             success: function (res) {
+               layui.use(['form','layer'], function() {
+                 var layer = layui.layer;
+                 if (res.flag == 1) {
+                   layer.msg(res.content, {icon: 6, time: 2000}, function () {
+                     location.reload();
+                   });
+                 } else {
+                   layer.msg(res.content, {icon: 5, time: 2000}, function () {
+                     location.reload();
+                   });
+                 }
+               });
+              }
+          });
+
+        });
+      }
     </script>
 
   </body>

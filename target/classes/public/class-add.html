@@ -55,6 +55,7 @@
                         if(res.flag == 1){
                             layer.msg(res.content, {icon: 1,time: 2000 }, function(){
                                 $("#className").val("");
+                                parent.location.reload();
                             });
                         }else{
                             layer.msg(res.content, {icon: 2,time: 2000 }, function(){

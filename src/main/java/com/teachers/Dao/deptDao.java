@@ -21,15 +21,19 @@ public interface deptDao {
     public List<Dept> selectDept();
     @Select("select count(*) from department")
     public int deptTotal();
-    @Select("select * from department where CONCAT(deptName) like '%' || '${deptName}' || '%'")
-    //@SelectProvider(method = "select", type = sqlUtl.class)
+
+
+
+   /* @Select("select * from department where CONCAT(deptName) like '%' || '${deptName}' || '%'")
+    @SelectProvider(method = "select", type = sqlUtl.class)
     public List<Dept> findOneDept(@Param("deptName") String deptName);
 
     @Select("select count(*) from department where deptName like '%${deptName}%'")
-    public int deptSL(String deptName);
+    public int deptSL(String deptName);*/
 
     @Delete("delete from department where deptId = #{deptId}")
     public int delOneDept(Integer deptId);
+
 
 
     /*
