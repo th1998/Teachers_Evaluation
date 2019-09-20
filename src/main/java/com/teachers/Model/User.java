@@ -7,6 +7,7 @@ public class User {
     private Integer userSex;
     private Integer roleId;
     private Integer deptId;
+    private Integer classId;
 
     public String getUserNO() {
         return userNO;
@@ -54,5 +55,13 @@ public class User {
 
     public void setDeptId(Integer deptId) {
         this.deptId = deptId;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 }

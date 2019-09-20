@@ -4,6 +4,7 @@ public class Class {
     private Integer classId;
     private String className;
 
+
     public Integer getClassId() {
         return classId;
     }

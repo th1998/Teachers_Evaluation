@@ -1,11 +1,14 @@
 package com.teachers.Controller;
 
 import com.teachers.Model.ResultMsg;
+import com.teachers.Model.Class;
 import com.teachers.Service.classService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class classController {
@@ -26,5 +29,13 @@ public class classController {
             return new ResultMsg(2,"添加失败");
         }
 
+    }
+
+
+    @RequestMapping("/findClass")
+    @ResponseBody
+    public List<Class> findClass(){
+        List<Class> classes = clsaaservice.findClass();
+        return classes;
     }
 }

@@ -47,15 +47,23 @@
             </div>
             <!--用户性别结束-->
             <!--用户角色开始-->
-            <div class="layui-form-item">
+            <div class="layui-form-item"  id="role_box">
                 <label class="layui-form-label" >用户角色</label>
                 <div class="layui-input-block">
-                    <select name="roleId"  id="role"></select>
+                    <select name="roleId"  id="role" lay-filter="role"  lay-verify="required"></select>
                 </div>
             </div>
             <!--用户角色结束-->
+            <!--班级开始-->
+            <div class="layui-form-item layui-hide" id="class_box">
+                <label class="layui-form-label" >用户班级</label>
+                <div class="layui-input-block">
+                    <select name="classId"  id="class"></select>
+                </div>
+            </div>
+            <!--班级结束-->
             <!--用户所属院系开始-->
-            <div class="layui-form-item">
+            <div class="layui-form-item layui-hide " id="dept_box">
                 <label class="layui-form-label" >用户院系</label>
                 <div class="layui-input-block">
                     <select name="deptId" id="dept"></select>
@@ -73,42 +81,109 @@
         <!--表单结束-->
     </div>
     <script>
-        //获取所有角色,by zt
-        $.ajax({
-            type:"POST",
-            url:"/selectRole",
-            success:function(res){
-                //   console.log(res);
-                var html = "";
-                for( var i=0;i<res.length;i++){
-                    html +="<option value="+res[i].roleId+">"+res[i].roleName+"</option>";
-                }
-                //    console.log(html);
-                $("#role").append(html);
-                //  console.log($("#role").html());
-            }
-        });
-         //查询所有院系，by zt
-        $.ajax({
-            type:"POST",
-            url:"/findDept",
-            success:function(data){
-                //    console.log(data);
-                var html = "";
-                for( var i=0;i<data.length;i++){
-                    html +="<option value="+data[i].deptId+">"+data[i].deptName+"</option>";
-                }
-                //   console.log(html);
-                $("#dept").append(html);
-                //    console.log($("#dept").html());
-            }
-        });
-        //添加用户，by zt
         layui.use(['form','layer'], function(){
             $ = layui.jquery;
           var form = layui.form
           ,layer = layui.layer;
            form.render();
+            //获取所有角色,by zt
+            $.ajax({
+                type:"POST",
+                url:"/selectRole",
+                success:function(res){
+                    //   console.log(res);
+                    var html = "<option value=' ' checked></option>";
+                    for( var i=0;i<res.length;i++){
+                        html +="<option value="+res[i].roleId+">"+res[i].roleName+"</option>";
+                    }
+                    //    console.log(html);
+                    $("#role").append(html);
+                    //  console.log($("#role").html());
+                    //append后必须重新新渲染
+                    form.render('select')
+                }
+            });
+            //查询所有院系，by zt
+            $.ajax({
+                type:"POST",
+                url:"/findDept",
+                success:function(data){
+                    //    console.log(data);
+                    var html = "<option value=' ' checked></option>";
+                    for( var i=0;i<data.length;i++){
+                        html +="<option value="+data[i].deptId+">"+data[i].deptName+"</option>";
+                    }
+                    //   console.log(html);
+                    $("#dept").append(html);
+                    //    console.log($("#dept").html());
+                    //append后必须重新新渲染
+                    form.render('select')
+                }
+            });
+
+            /*
+                @ZT 提交表单数据到后台，查询所有班级，并且显示。
+            */
+            $.ajax({
+                type:"POST",
+                url:"/findClass",
+                success:function(res){
+                      console.log(res);
+                    var html = "<option value=' ' checked></option>";
+                    for( var i=0;i<res.length;i++){
+                        html +="<option value="+res[i].classId+">"+res[i].className+"</option>";
+                    }
+                      console.log(html);
+                    $("#class").append(html);
+                    console.log($("#class").html());
+                    //append后必须重新新渲染
+                    form.render('select')
+                }
+            });
+            /*
+             查询班级结束
+            */
+
+            //判断用户是否为学生或者老师，若是学生添加班级和学院选项，若是老师添加学院选项
+            form.on('select(role)', function(data){
+               // console.log(data.value); //得到被选中的值
+                var roleid = data.value;
+                /*
+                 判断是否为学生
+                 */
+                    if (roleid == 1){
+                        if($('#class_box').hasClass('layui-hide') && $('#dept_box').hasClass('layui-hide')){
+                            $('#class').attr("lay-verify","");
+                            $('#dept').attr("lay-verify","");
+                            return true;
+                        }
+                        else {
+                            $('#class_box').addClass('layui-hide');
+                            $('#class').attr("lay-verify","");
+                            $('#dept_box').addClass('layui-hide');
+                            $('#dept').attr("lay-verify","");
+                        }
+                    }
+                if (roleid == 3){
+                    $('#class_box').removeClass('layui-hide');
+                    $('#class').attr("lay-verify","required");
+                    $('#dept_box').removeClass('layui-hide');
+                    $('#dept').attr("lay-verify","required");
+                    form.render('select');
+                }
+                if(roleid == 2){
+                    $('#dept_box').removeClass('layui-hide');
+                    $('#dept').attr("lay-verify","required");
+                    $('#class_box').removeClass('layui-hide');
+                    $('#deptId').attr("lay-verify","required");
+                    $('#class_box').addClass('layui-hide');
+                    $('#class').attr("lay-verify","");
+                    form.render('select');
+                }
+        });
+
+
+            // create by zt 添加用户
          form.on('submit(addUser)', function(data){
             console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
              $.ajax({
@@ -119,10 +194,18 @@
                          console.log(res);
                      if(res.flag == 1){
                          layer.alert(res.content);
+                         $('#class_box').addClass('layui-hide');
+                         $('#dept_box').addClass('layui-hide');
+                         $('#class').attr("lay-verify","");
+                         $('#dept').attr("lay-verify","");
                          $("form")[0].reset();
                      }else{
                          layer.alert(res.content);
                          data.filed="";
+                         $('#class_box').addClass('layui-hide');
+                         $('#dept_box').addClass('layui-hide');
+                         $('#class').attr("lay-verify","");
+                         $('#dept').attr("lay-verify","");
                          $("form")[0].reset();
 
                      }

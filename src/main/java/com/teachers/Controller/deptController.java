@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.teachers.Model.Dept;
 import com.teachers.Model.ResultMsg;
+import com.teachers.Model.pageBean;
 import com.teachers.Service.deptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,29 +37,46 @@ public class deptController {
     */
     @RequestMapping("/deptTotle")
     @ResponseBody
-    public PageInfo<Dept> deptTotle() {
-        PageInfo<Dept> page = deptservice.selectDept();
+    public pageBean deptTotle() {
+        pageBean page = deptservice.selectDept();
         return page;
     }
-    /*
-       @唐浩  院系列表
-    */
+
     @RequestMapping("/deptList")
     @ResponseBody
-    public PageInfo<Dept> deptList(Integer page){
-        System.out.println(page);
+    public pageBean deptList(Integer page,String deptName){
         PageHelper.startPage(page, 8);
-        List<Dept> dept = deptservice.getDept(page);
-        PageInfo<Dept> in = new PageInfo<Dept>(dept);
-        return in;
+
+        if(deptName != null){
+            List<Dept> dept = deptservice.findOneDept(deptName);
+            int i = deptservice.deptSL(deptName);
+            String f = "yes";
+            pageBean in = new pageBean(i,f,dept);
+            return in;
+        }else{
+            List<Dept> dept = deptservice.getDept(page);
+            int i = deptservice.deptTotal();
+            String f = "no";
+            pageBean in = new pageBean(i,f,dept);
+            return in;
+        }
+    }
+
+    @RequestMapping("/cx")
+    @ResponseBody
+    public List<Dept> cx(String deptName){
+        System.out.println(deptName);
+        List<Dept> l = deptservice.findOneDept(deptName);
+        return l;
     }
 
     /*
-      @张彤  院系查询
-    */
+    @张彤  院系查询
+  */
     @RequestMapping("/findDept")
     @ResponseBody
     public List<Dept> findDept(){
+
         List<Dept> depts=deptservice.findDept();
         return depts;
     }

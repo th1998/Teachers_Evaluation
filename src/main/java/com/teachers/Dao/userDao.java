@@ -9,7 +9,8 @@ public interface userDao {
     /*
     * @张彤
     * */
-    @Insert("insert into user(userNO,userName,userPass,userSex,roleId,deptId) " +
-            "values(#{userNO},#{userName},#{userPass},#{userSex},#{roleId},#{deptId}) ")
+    @Insert("insert into user(userNO,userName,userPass,userSex,roleId,deptId,classId)" +
+            "values(#{userNO},#{userName},#{userPass},#{userSex},#{roleId},#{deptId},#{classId})")
     public int addUser(User user);
+
 }

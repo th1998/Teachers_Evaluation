@@ -1,9 +1,8 @@
 package com.teachers.Service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.teachers.Dao.deptDao;
 import com.teachers.Model.Dept;
+import com.teachers.Model.pageBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,6 +12,8 @@ import java.util.List;
 public class deptService {
     @Resource
     deptDao deptdao;
+
+
     /*
       @胡志航
      */
@@ -20,21 +21,42 @@ public class deptService {
         return deptdao.addDept(deptName);
     }
 
-    public PageInfo<Dept> selectDept(){
+
+    /*
+       @唐浩
+    */
+    public pageBean selectDept(){
+        int t = deptdao.deptTotal();
         List<Dept> a= deptdao.selectDept();
-        PageInfo<Dept> page = new PageInfo<>(a);
+        String f = "no";
+        pageBean page = new pageBean(t,f,a);
         return page;
     }
-    /*
-      @唐浩
-    */
+
     public List<Dept> getDept(Integer page){
         List<Dept> a= deptdao.selectDept();
         return a;
     }
+    public int deptTotal(){
+        return deptdao.deptTotal();
+    }
+
+
+
+    public List<Dept> findOneDept(String deptName){
+        List<Dept> a= deptdao.findOneDept(deptName);
+        return a;
+    }
+    public int deptSL(String deptName){
+        return deptdao.deptSL(deptName);
+    }
+
+
+
+
     /*
-       @张彤
-     */
+      @张彤
+    */
     public List<Dept> findDept(){
         return deptdao.findDept();
     }
