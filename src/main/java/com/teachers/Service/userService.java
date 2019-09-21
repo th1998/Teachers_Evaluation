@@ -11,9 +11,8 @@ public class userService {
     @Resource
     userDao userdao;
     /*
-     * @张彤
-     * */
-    //添加用户
+     *@张彤  添加用户
+     **/
     public int addUser(User user){
         return userdao.addUser(user);
     }

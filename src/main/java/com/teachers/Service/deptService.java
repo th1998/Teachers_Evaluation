@@ -13,18 +13,19 @@ public class deptService {
     @Resource
     deptDao deptdao;
 
-
     /*
-      @胡志航
-     */
+     *@胡志航  添加院系、删除单个院系
+     **/
     public int addDept(String deptName){
         return deptdao.addDept(deptName);
     }
-
+    public int delOneDept(Integer deptId){
+        return deptdao.delOneDept(deptId);
+    }
 
     /*
-       @唐浩
-    */
+     *@唐浩  院系列表分页
+     **/
     public pageBean selectDept(){
         int t = deptdao.deptTotal();
         List<Dept> a= deptdao.selectDept();
@@ -35,7 +36,6 @@ public class deptService {
         page.setDeptList(a);
         return page;
     }
-
     public List<Dept> getDept(Integer page){
         List<Dept> a= deptdao.selectDept();
         return a;
@@ -44,19 +44,9 @@ public class deptService {
         return deptdao.deptTotal();
     }
 
-
-
-    public int delOneDept(Integer deptId){
-        return deptdao.delOneDept(deptId);
-    }
-
-    /*public int delAll(String ids){
-        return deptdao.delAll(ids);
-    }*/
-
     /*
-      @张彤
-    */
+     *@张彤  查询院系
+     **/
     public List<Dept> findDept(){
         return deptdao.findDept();
     }

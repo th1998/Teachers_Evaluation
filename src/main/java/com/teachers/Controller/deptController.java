@@ -18,9 +18,10 @@ import java.util.List;
 public class deptController {
     @Autowired
     private deptService deptservice;
+
     /*
-       @胡志航  添加院系
-    */
+     *@胡志航  添加院系、删除单个院系
+     **/
     @RequestMapping("/addDept")
     @ResponseBody
     public ResultMsg addRole(String deptName){
@@ -33,16 +34,26 @@ public class deptController {
             return new ResultMsg(2,"添加失败");
 
     }
+    @RequestMapping("/delOneDept")
+    @ResponseBody
+    public ResultMsg delOneDept(Integer deptId){
+        int i = deptservice.delOneDept(deptId);
+        if(i>0){
+            return new ResultMsg(1,"删除成功");
+        }else{
+            return new ResultMsg(2,"删除失败");
+        }
+    }
+
     /*
-        @唐浩  院系列表
-    */
+     *@唐浩  院系列表分页
+     **/
     @RequestMapping("/deptTotle")
     @ResponseBody
     public pageBean deptTotle() {
         pageBean page = deptservice.selectDept();
         return page;
     }
-
     @RequestMapping("/deptList")
     @ResponseBody
     public pageBean deptList(Integer page){
@@ -57,39 +68,12 @@ public class deptController {
             return in;
     }
 
-
-    //单个删除
-    @RequestMapping("/delOneDept")
-    @ResponseBody
-    public ResultMsg delOneDept(Integer deptId){
-        int i = deptservice.delOneDept(deptId);
-        if(i>0){
-            return new ResultMsg(1,"删除成功");
-        }else{
-            return new ResultMsg(2,"删除失败");
-        }
-    }
-
-   /* @RequestMapping("/delAll")
-    @ResponseBody
-    public ResultMsg delAll(String ids){
-        System.out.println(ids);
-
-
-        int i = deptservice.delAll(ids);
-        if(i>0){
-            return new ResultMsg(1,"删除成功");
-        }else{
-            return new ResultMsg(2,"删除失败");
-        }
-    }*/
     /*
-    @张彤  院系查询
-  */
+     *@张彤  查询院系
+     **/
     @RequestMapping("/findDept")
     @ResponseBody
     public List<Dept> findDept(){
-
         List<Dept> depts=deptservice.findDept();
         return depts;
     }

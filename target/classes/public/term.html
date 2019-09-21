@@ -15,6 +15,8 @@
   </head>
   
   <body>
+  <div class="totle" style="display: none;"></div>
+  <div class="panduan" style="display: none;"></div>
     <div class="x-nav">
       <span class="layui-breadcrumb">
         <a href="">首页</a>
@@ -34,122 +36,202 @@
       <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加学期','./term-add.html',400,200)"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        <span class="x-right" style="line-height:40px"></span>
       </xblock>
-      <table class="layui-table x-admin">
+      <table class="layui-table layui-form">
         <thead>
           <tr>
             <th width="10%">
-              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+              <input type="checkbox" id="checkall" lay-filter="checkalls"  name="checkall" lay-skin="primary" >
             </th>
             <th width="10%">ID</th>
             <th width="70%">学期</th>
             <th width="10%">操作</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
-            </td>
-            <td>1</td>
-            <td>大一上</td>
-            <td class="td-manage">
-              <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-                <i class="layui-icon">&#xe601;</i>
-              </a>
-              <a title="编辑"  onclick="x_admin_show('编辑','member-edit.html',600,400)" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
-              <a onclick="x_admin_show('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
-                <i class="layui-icon">&#xe631;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
+
 
         </tbody>
       </table>
-      <div class="page">
-        <div>
-          <a class="prev" href="">&lt;&lt;</a>
-          <a class="num" href="">1</a>
-          <span class="current">2</span>
-          <a class="num" href="">3</a>
-          <a class="num" href="">489</a>
-          <a class="next" href="">&gt;&gt;</a>
-        </div>
+      <div id="page_div" style="float: right;"></div>
       </div>
+
 
     </div>
     <script>
-      layui.use('laydate', function(){
-        var laydate = layui.laydate;
-        
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#start' //指定元素
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#end' //指定元素
-        });
+      $.ajax({
+        type:"POST",
+        url:"/termTotle",
+        async: false,
+        success:function(res){
+          console.log(res)
+          $(".totle").html(res.total);
+          $(".panduan").html(res.flag);
+        }
       });
 
-       /*用户-停用*/
-      function member_stop(obj,id){
-          layer.confirm('确认要停用吗？',function(index){
 
-              if($(obj).attr('title')=='启用'){
+      var total = $(".totle").html();
+      var pageNum=1;
+      if(total%8 == 0){
+        var page = total/8;
+      }else{
+        var page = parseInt(total/8)+1;
+      }
+      $(".x-right").html("共有数据:"+total+"条 共:"+page+"页");
 
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
+      layui.use('laypage',function(){
+        var laypage=layui.laypage;
 
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
+        laypage.render({
+          elem: 'page_div',
+          count: total,
+          curr:pageNum,
+          limit:8,
+          theme:'#222222',
+          jump: function(obj, first){
 
-              }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
+            onShow(obj.curr);
 
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
-              }
-              
-          });
+          }
+        });
+
+      });
+
+      onShow = function(page) {
+        $.ajax({
+          url: '/termList',
+          type: 'get',
+          data: {page: page},
+          async: false,
+          success: function (data) {
+            var tr = "";
+            for(var i = 0;i<data.termList.length;i++){
+              tr += "<tr>";
+              tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.termList[i].termId+"'></th>";
+              tr += "<th>"+data.termList[i].termId+"</th>";
+              tr += "<th>"+data.termList[i].termName+"</th>";
+              tr += "<td class='td-manage'>"+
+                      "<a title='编辑'  onclick=\'x_admin_show(\"编辑\",\"${pageContext.request.contextPath}/question_bank_update?id="+data.termList[i].termId+"\")\'>"+
+                      "<i class='layui-icon'>&#xe63c;</i>"+
+                      "</a>"+
+                      "<a title='删除'  onclick='del("+data.termList[i].termId+")'>"+
+                      "<i class='layui-icon'>&#xe640;</i>"+
+                      "</a>"+
+                      "</td>"
+              layui.jquery("tbody").html(tr);
+              layui.use('form', function(){
+                var  form = layui.form;
+                form.render("checkbox");
+              });
+            }
+          }
+        });
       }
 
-      /*用户-删除*/
-      function member_del(obj,id){
-          layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
+      //勾选数据列
+      var a=[];
+      layui.use('form', function() {
+        form = layui.form;
+        //全选
+        form.on('checkbox(checkalls)', function (data) {
+          var a = data.elem.checked;
+          if (a == true) {
+            $(".checkd").prop("checked", true);
+            form.render('checkbox');
+          } else {
+            $(".checkd").prop("checked", false);
+            form.render('checkbox');
+          }
+        });
+
+        //有一个未选中全选取消选中
+        form.on('checkbox(Id)', function (data) {
+          var item = $(".checkd");
+          for (var i = 0; i < item.length; i++) {
+            if (item[i].checked == false) {
+              $("#checkall").prop("checked", false);
+              form.render('checkbox');
+              break;
+            }
+          }
+
+          //如果都勾选了  勾上全选
+          var  all=item.length;
+          for (var i = 0; i < item.length; i++) {
+            if (item[i].checked == true) {
+              all--;
+            }
+          }
+          if(all==0){
+            $("#checkall").prop("checked", true);
+            form.render('checkbox');
+          }
+
+        });
+      })
+
+
+      //删除单个学期
+      function del(termId) {
+        console.log("id值" + termId);
+        layer.confirm('是否删除该用户', {icon: 6}, function (index) {
+          $.ajax({
+            url: '/delOneTerm',
+            type: 'get',
+            data: {termId: termId},
+            async: false,
+            success: function (res) {
+              layui.use(['form','layer'], function() {
+                var layer = layui.layer;
+                if(res.flag == 1){
+                  layer.msg(res.content,{icon: 6,time:2000},function(){location.reload();});
+                }else{
+                  layer.msg(res.content,{icon: 5,time:2000},function(){location.reload();});
+                }
+              });
+            }
           });
+        });
       }
 
+      //批量删除
+      function delAll(){
+        var idArr=""
+        $('input[name="checkd"]').each(function(){
+          if($(this).prop("checked")){
+            idArr=idArr+$(this).val()+",";
+          }
+        });
 
+        var ids = idArr.substr(0,idArr.length-1);
+        console.log(ids)
 
-      function delAll (argument) {
+        layer.confirm('确认要删除吗？',function(index){
+          $.ajax({
+            url: '/delTerms',
+            type: 'get',
+            data: {ids: ids},
+            async: false,
+            success: function (res) {
+              layui.use(['form','layer'], function() {
+                var layer = layui.layer;
+                if (res.flag == 1) {
+                  layer.msg(res.content, {icon: 6, time: 2000}, function () {
+                    location.reload();
+                  });
+                } else {
+                  layer.msg(res.content, {icon: 5, time: 2000}, function () {
+                    location.reload();
+                  });
+                }
+              });
+            }
+          });
 
-        var data = tableCheck.getData();
-  
-        layer.confirm('确认要删除吗？'+data,function(index){
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
         });
       }
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
   </body>
 
 </html>

@@ -16,8 +16,8 @@ public class userController {
     userService userservice;
 
     /*
-     * @张彤  添加用户
-     * */
+     *@张彤  添加用户
+     **/
     @RequestMapping("/addUser")
     @ResponseBody
     public ResultMsg addUser(HttpServletRequest request) {

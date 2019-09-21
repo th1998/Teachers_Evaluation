@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface userDao {
     /*
-    * @张彤
-    * */
+     *@张彤  添加用户
+     **/
     @Insert("insert into user(userNO,userName,userPass,userSex,roleId,deptId,classId)" +
             "values(#{userNO},#{userName},#{userPass},#{userSex},#{roleId},#{deptId},#{classId})")
     public int addUser(User user);

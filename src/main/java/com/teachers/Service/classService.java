@@ -13,21 +13,25 @@ public class classService {
     @Resource
     classDao classdao;
     /*
-       @李胤江
-    */
+     *@李胤江  添加班级、删除班级
+     **/
     public int addclass(String className){
         return classdao.addClass(className);
     };
+    public int delOneClass(Integer classId){
+        return classdao.delOneClass(classId);
+    }
+
     /*
-      @张彤
-    */
+     *@张彤  查询班级
+     **/
     public List<Class> findClass(){
         return classdao.findClass();
     };
 
     /*
-    * @唐浩
-    * */
+     *@唐浩  班级列表分页
+     **/
     public pageBean selectDept(){
         int t = classdao.classTotal();
         List<Class> a= classdao.selectClass();
@@ -38,7 +42,6 @@ public class classService {
         page.setClassList(a);
         return page;
     }
-
     public List<Class> getClass(Integer page){
         List<Class> a= classdao.selectClass();
         return a;
@@ -47,8 +50,4 @@ public class classService {
         return classdao.classTotal();
     }
 
-
-    public int delOneClass(Integer classId){
-        return classdao.delOneClass(classId);
-    }
 }

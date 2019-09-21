@@ -45,7 +45,7 @@
               <input type="checkbox" id="checkall" lay-filter="checkalls"  name="checkall" lay-skin="primary" >
             </th>
             <th width="10%">ID</th>
-            <th width="70%">院系名</th>
+            <th width="70%">班级代号</th>
             <th width="10%">操作</th></tr>
         </thead>
         <tbody>
@@ -192,6 +192,44 @@
               });
             }
           });
+        });
+      }
+
+
+      //批量删除
+      function delAll(){
+        var idArr=""
+        $('input[name="checkd"]').each(function(){
+          if($(this).prop("checked")){
+            idArr=idArr+$(this).val()+",";
+          }
+        });
+
+        var ids = idArr.substr(0,idArr.length-1);
+        console.log(ids)
+
+        layer.confirm('确认要删除吗？',function(index){
+          $.ajax({
+            url: '/delClasses',
+            type: 'get',
+            data: {ids: ids},
+            async: false,
+            success: function (res) {
+              layui.use(['form','layer'], function() {
+                var layer = layui.layer;
+                if (res.flag == 1) {
+                  layer.msg(res.content, {icon: 6, time: 2000}, function () {
+                    location.reload();
+                  });
+                } else {
+                  layer.msg(res.content, {icon: 5, time: 2000}, function () {
+                    location.reload();
+                  });
+                }
+              });
+            }
+          });
+
         });
       }
 

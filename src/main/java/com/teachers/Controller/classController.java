@@ -19,8 +19,8 @@ public class classController {
     private classService classservice;
 
     /*
-     @李胤江  添加班级
-     */
+     *@李胤江  添加班级、删除班级
+     **/
     @RequestMapping("/addClass")
     @ResponseBody
     public ResultMsg addClass(String className){
@@ -31,12 +31,21 @@ public class classController {
         }else{
             return new ResultMsg(2,"添加失败");
         }
-
+    }
+    @RequestMapping("/delOneClass")
+    @ResponseBody
+    public ResultMsg delOneClass(Integer classId){
+        int i = classservice.delOneClass(classId);
+        if(i>0){
+            return new ResultMsg(1,"删除成功");
+        }else{
+            return new ResultMsg(2,"删除失败");
+        }
     }
 
     /*
-    * @张彤 查找班级
-    * */
+     *@张彤 查询班级
+     **/
     @RequestMapping("/findClass")
     @ResponseBody
     public List<Class> findClass(){
@@ -44,7 +53,9 @@ public class classController {
         return classes;
     }
 
-    //班级列表
+    /*
+     *@唐浩  班级列表分页
+     **/
     @RequestMapping("/classTotle")
     @ResponseBody
     public pageBean classTotle() {
@@ -66,15 +77,5 @@ public class classController {
         return in;
     }
 
-    //删除单个班级
-    @RequestMapping("/delOneClass")
-    @ResponseBody
-    public ResultMsg delOneClass(Integer classId){
-        int i = classservice.delOneClass(classId);
-        if(i>0){
-            return new ResultMsg(1,"删除成功");
-        }else{
-            return new ResultMsg(2,"删除失败");
-        }
-    }
+
 }

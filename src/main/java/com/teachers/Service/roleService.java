@@ -18,4 +18,7 @@ public class roleService {
         return roledao.addRole(roleName);
     }
     public List<Role> selectRole(){ return  roledao.selectRole();}
+    public int delRole(Integer roleId){
+        return roledao.delRole(roleId);
+    }
 }

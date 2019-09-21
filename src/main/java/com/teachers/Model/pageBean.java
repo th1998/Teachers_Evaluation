@@ -9,6 +9,7 @@ public class pageBean {
     private String flag;
     private List<Dept> deptList;
     private List<Class> classList;
+    private List<Term> termList;
 
 
 
@@ -42,5 +43,13 @@ public class pageBean {
 
     public void setClassList(List<Class> classList) {
         this.classList = classList;
+    }
+
+    public List<Term> getTermList() {
+        return termList;
+    }
+
+    public void setTermList(List<Term> termList) {
+        this.termList = termList;
     }
 }

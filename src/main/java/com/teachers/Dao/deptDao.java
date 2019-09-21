@@ -9,36 +9,25 @@ import java.util.List;
 @Mapper
 public interface deptDao {
     /*
-      @胡志航
-     */
+     *@胡志航  添加院系、删除单个院系
+     **/
     @Insert("insert into department(deptName) values(#{deptName})")
     public int addDept(String deptName);
 
+    @Delete("delete from department where deptId = #{deptId}")
+    public int delOneDept(Integer deptId);
+
     /*
-      @唐浩
-    */
+     *@唐浩  院系列表分页
+     **/
     @Select("select * from department")
     public List<Dept> selectDept();
     @Select("select count(*) from department")
     public int deptTotal();
 
-
-
-   /* @Select("select * from department where CONCAT(deptName) like '%' || '${deptName}' || '%'")
-    @SelectProvider(method = "select", type = sqlUtl.class)
-    public List<Dept> findOneDept(@Param("deptName") String deptName);
-
-    @Select("select count(*) from department where deptName like '%${deptName}%'")
-    public int deptSL(String deptName);*/
-
-    @Delete("delete from department where deptId = #{deptId}")
-    public int delOneDept(Integer deptId);
-
-
-
     /*
-      @张彤
-    */
+     *@张彤  查询院系
+     **/
     @Select("select * from department")
     public List<Dept> findDept();
 

@@ -29,6 +29,18 @@ public class roleController {
         }
 
     }
+
+    //删除角色
+    @RequestMapping("/delRole")
+    @ResponseBody
+    public ResultMsg delRole(Integer roleId){
+        int i = roleservice.delRole(roleId);
+        if(i>0){
+            return new ResultMsg(1,"添加成功");
+        }else{
+            return new ResultMsg(2,"添加失败");
+        }
+    }
     /*
       @张彤 查询角色
     * */
