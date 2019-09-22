@@ -41,4 +41,9 @@ public class termService {
         return termdao.termTotal();
     }
 
+
+    public List<Term> terms(){
+        List<Term> a= termdao.selectTerm();
+        return a;
+    }
 }

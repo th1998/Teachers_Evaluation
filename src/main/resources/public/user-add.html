@@ -14,7 +14,9 @@
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/js/xadmin.js"></script>
     <script type="text/javascript" src="/js/cookie.js"></script>
-
+      <style>
+          .layui-form-select dl { max-height:120px; }
+      </style>
   </head>
   <!-- create by zt-->
   <body>
@@ -58,7 +60,7 @@
             <div class="layui-form-item layui-hide" id="class_box">
                 <label class="layui-form-label" >用户班级</label>
                 <div class="layui-input-block">
-                    <select name="classId"  id="class"></select>
+                    <select name="classId"  id="class" lay-filter="class"></select>
                 </div>
             </div>
             <!--班级结束-->
@@ -66,7 +68,7 @@
             <div class="layui-form-item layui-hide " id="dept_box">
                 <label class="layui-form-label" >用户院系</label>
                 <div class="layui-input-block">
-                    <select name="deptId" id="dept"></select>
+                    <select name="deptId" id="dept" lay-filter="dept"></select>
                 </div>
             </div>
             <!--用户所属院系结束-->
@@ -199,7 +201,7 @@
                          $('#class').attr("lay-verify","");
                          $('#dept').attr("lay-verify","");
                          $("form")[0].reset();
-                         parent.location.reload();
+
                      }else{
                          layer.alert(res.content);
                          data.filed="";

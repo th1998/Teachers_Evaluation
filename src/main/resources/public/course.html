@@ -15,6 +15,8 @@
   </head>
   
   <body>
+  <div class="totle" style="display: none;"></div>
+  <div class="panduan" style="display: none;"></div>
     <div class="x-nav">
       <span class="layui-breadcrumb">
         <a href="">首页</a>
@@ -27,137 +29,159 @@
     <div class="x-body">
       <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
-          <input type="text" name="deptName"  placeholder="请输入院系名" autocomplete="off" class="layui-input">
+          <input type="text" name="deptName"  placeholder="请输入课程名" autocomplete="off" class="layui-input">
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加用户','./member-add.html',600,400)"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        <button class="layui-btn" onclick="x_admin_show('添加课程','./course-add.html',600,400)"><i class="layui-icon"></i>添加</button>
+        <span class="x-right" style="line-height:40px"></span>
       </xblock>
-      <table class="layui-table x-admin">
+      <table class="layui-table layui-form">
         <thead>
           <tr>
             <th width="10%">
-              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+              <input type="checkbox" id="checkall" lay-filter="checkalls"  name="checkall" lay-skin="primary" >
             </th>
             <th width="10%">ID</th>
-            <th width="10%">课程名</th>
+            <th width="10%">课程名称</th>
             <th width="10%">课程类型</th>
             <th width="10%">任课老师</th>
             <th width="20%">班级代号</th>
-            <th width="20%">学期</th>
+            <th width="20%">课程学期</th>
             <th width="10%">操作</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
-            </td>
-            <td>1</td>
-            <td>java</td>
-            <td>必修</td>
-            <td>皮老师</td>
-            <td>1690005</td>
-            <td>大四上</td>
-            <td class="td-manage">
-              <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-                <i class="layui-icon">&#xe601;</i>
-              </a>
-              <a title="编辑"  onclick="x_admin_show('编辑','member-edit.html',600,400)" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
-              <a onclick="x_admin_show('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
-                <i class="layui-icon">&#xe631;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
+
 
         </tbody>
       </table>
-      <div class="page">
-        <div>
-          <a class="prev" href="">&lt;&lt;</a>
-          <a class="num" href="">1</a>
-          <span class="current">2</span>
-          <a class="num" href="">3</a>
-          <a class="num" href="">489</a>
-          <a class="next" href="">&gt;&gt;</a>
-        </div>
+      <div id="page_div" style="float: right;"></div>
       </div>
 
     </div>
     <script>
-      layui.use('laydate', function(){
-        var laydate = layui.laydate;
-        
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#start' //指定元素
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#end' //指定元素
-        });
+      $.ajax({
+        type:"POST",
+        url:"/courseTotle",
+        async: false,
+        success:function(res){
+          console.log(res)
+          $(".totle").html(res.total);
+          $(".panduan").html(res.flag);
+        }
       });
 
-       /*用户-停用*/
-      function member_stop(obj,id){
-          layer.confirm('确认要停用吗？',function(index){
 
-              if($(obj).attr('title')=='启用'){
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
-
-              }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
-              }
-              
-          });
+      var total = $(".totle").html();
+      var pageNum=1;
+      if(total%8 == 0){
+        var page = total/8;
+      }else{
+        var page = parseInt(total/8)+1;
       }
-
-      /*用户-删除*/
-      function member_del(obj,id){
-          layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
-          });
-      }
+      $(".x-right").html("共有数据:"+total+"条 共:"+page+"页");
 
 
+      layui.use('laypage',function(){
+        var laypage=layui.laypage;
 
-      function delAll (argument) {
+        laypage.render({
+          elem: 'page_div',
+          count: total,
+          curr:pageNum,
+          limit:8,
+          theme:'#222222',
+          jump: function(obj, first){
 
-        var data = tableCheck.getData();
-  
-        layer.confirm('确认要删除吗？'+data,function(index){
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
+            onShow(obj.curr);
+
+          }
+        });
+
+      });
+
+      onShow = function(page) {
+        $.ajax({
+          url: '/courseList',
+          type: 'get',
+          data: {page: page},
+          async: false,
+          success: function (data) {
+            console.log(data);
+           /* var tr = "";
+            for(var i = 0;i<data.courseList.length;i++){
+              tr += "<tr>";
+              tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.courseList[i].courseId+"'></th>";
+              tr += "<th>"+data.courseList[i].courseId+"</th>";
+              tr += "<th>"+data.courseList[i].courseName+"</th>";
+              tr += "<th>"+data.courseList[i].courseType+"</th>";
+              tr += "<th>"+data.courseList[i].className+"</th>";
+              tr += "<th>"+data.courseList[i].users.userName+"</th>";
+              tr += "<th>"+data.courseList[i].classes.className+"</th>";
+              tr += "<th>"+data.courseList[i].terms.termName+"</th>";
+              tr += "<td class='td-manage'>"+
+                      "<a title='编辑'  onclick=\'x_admin_show(\"编辑\",\"${pageContext.request.contextPath}/question_bank_update?id="+data.courseList[i].courseId+"\")\'>"+
+                      "<i class='layui-icon'>&#xe63c;</i>"+
+                      "</a>"+
+                      "<a title='删除'  onclick='del("+data.courseList[i].courseId+")'>"+
+                      "<i class='layui-icon'>&#xe640;</i>"+
+                      "</a>"+
+                      "</td>"
+              layui.jquery("tbody").html(tr);
+              layui.use('form', function(){
+                var  form = layui.form;
+                form.render("checkbox");
+              });
+            }*/
+          }
         });
       }
+
+      //勾选数据列
+      var a=[];
+      layui.use('form', function() {
+        form = layui.form;
+        //全选
+        form.on('checkbox(checkalls)', function (data) {
+          var a = data.elem.checked;
+          if (a == true) {
+            $(".checkd").prop("checked", true);
+            form.render('checkbox');
+          } else {
+            $(".checkd").prop("checked", false);
+            form.render('checkbox');
+          }
+        });
+
+        //有一个未选中全选取消选中
+        form.on('checkbox(Id)', function (data) {
+          var item = $(".checkd");
+          for (var i = 0; i < item.length; i++) {
+            if (item[i].checked == false) {
+              $("#checkall").prop("checked", false);
+              form.render('checkbox');
+              break;
+            }
+          }
+
+          //如果都勾选了  勾上全选
+          var  all=item.length;
+          for (var i = 0; i < item.length; i++) {
+            if (item[i].checked == true) {
+              all--;
+            }
+          }
+          if(all==0){
+            $("#checkall").prop("checked", true);
+            form.render('checkbox');
+          }
+
+        });
+      })
+
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
   </body>
 
 </html>

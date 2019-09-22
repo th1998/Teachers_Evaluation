@@ -10,6 +10,7 @@ public class pageBean {
     private List<Dept> deptList;
     private List<Class> classList;
     private List<Term> termList;
+    private List<Course> courseList;
 
 
 
@@ -51,5 +52,13 @@ public class pageBean {
 
     public void setTermList(List<Term> termList) {
         this.termList = termList;
+    }
+
+    public List<Course> getCourseList() {
+        return courseList;
+    }
+
+    public void setCourseList(List<Course> courseList) {
+        this.courseList = courseList;
     }
 }

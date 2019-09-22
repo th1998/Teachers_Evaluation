@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class userController {
@@ -62,5 +63,19 @@ public class userController {
             return new ResultMsg(1,"添加成功");
         }
         return new ResultMsg(2,"添加失败");
+    }
+
+    /*
+     *@唐浩 查询教师
+     **/
+    @RequestMapping("/getTeacher")
+    @ResponseBody
+    public List<User> getTeacher(){
+        List<User>  teacher = userservice.getTeacher();
+        for(int i = 0;i<teacher.size();i++){
+            System.out.println(teacher.get(i).getUserId());
+        }
+
+        return teacher;
     }
 }

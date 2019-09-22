@@ -64,5 +64,10 @@ public class termController {
         return in;
     }
 
-
+    @RequestMapping("/terms")
+    @ResponseBody
+    public List<Term> terms(){
+        List<Term> terms= termservice.terms();
+        return terms;
+    }
 }

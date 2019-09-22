@@ -1,6 +1,7 @@
 package com.teachers.Model;
 
 public class User {
+    private Integer userId;
     private String userNO;
     private String userName;
     private String userPass;
@@ -8,6 +9,14 @@ public class User {
     private Integer roleId;
     private Integer deptId;
     private Integer classId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public String getUserNO() {
         return userNO;
