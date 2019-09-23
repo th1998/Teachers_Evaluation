@@ -1,7 +1,8 @@
 package com.teachers.Controller;
 
-import com.teachers.Model.ResultMsg;
-import com.teachers.Model.User;
+import com.github.pagehelper.PageHelper;
+import com.teachers.Model.*;
+import com.teachers.Model.Class;
 import com.teachers.Service.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -77,5 +78,41 @@ public class userController {
         }
 
         return teacher;
+    }
+
+    /**/
+    @RequestMapping("/getAllUser")
+    @ResponseBody
+    public pageBean getAllUser() {
+        pageBean page = userservice.getAllUser();
+        return page;
+    }
+
+    @RequestMapping("/User_viewList")
+    @ResponseBody
+    public pageBean User_viewList(Integer page){
+        PageHelper.startPage(page, 8);
+        List<User_view> user_views= userservice.getUser_view(page);
+        int i = userservice.classTotal();
+        String f = "no";
+        pageBean in = new pageBean();
+        in.setTotal(i);
+        in.setFlag(f);
+        in.setUser_viewList(user_views);
+        return in;
+    }
+
+    /*
+     *删除单个用户
+     */
+    @RequestMapping("/delOneUser")
+    @ResponseBody
+    public ResultMsg delOneUser(Integer userId){
+        int i = userservice.delOneUser(userId);
+        if(i>0){
+            return new ResultMsg(1,"删除成功");
+        }else{
+            return new ResultMsg(1,"删除成功");
+        }
     }
 }

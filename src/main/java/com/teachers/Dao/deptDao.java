@@ -25,6 +25,9 @@ public interface deptDao {
     @Select("select count(*) from department")
     public int deptTotal();
 
+    @Update("update department set deptName = #{deptName} where deptId = #{deptId}")
+    public int updateDept(@Param("deptId") Integer deptId,@Param("deptName") String deptName);
+
     /*
      *@张彤  查询院系
      **/

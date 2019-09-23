@@ -48,7 +48,7 @@
             <th width="70%">院系名</th>
             <th width="10%">操作</th></tr>
         </thead>
-        <tbody>
+        <tbody id="t">
 
         </tbody>
       </table>
@@ -106,12 +106,12 @@
             var tr = "";
             for(var i = 0;i<data.deptList.length;i++){
               tr += "<tr>";
-              tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.deptList[i].deptId+"'></th>";
-              tr += "<th>"+data.deptList[i].deptId+"</th>";
-              tr += "<th>"+data.deptList[i].deptName+"</th>";
+              tr += "<td><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.deptList[i].deptId+"'></td>";
+              tr += "<td>"+data.deptList[i].deptId+"</td>";
+              tr += "<td id='"+data.deptList[i].deptId+"'>"+data.deptList[i].deptName+"</td>";
               tr += "<td class='td-manage'>"+
-                      "<a title='编辑'  onclick=\'x_admin_show(\"编辑\",\"${pageContext.request.contextPath}/question_bank_update?id="+data.deptList[i].deptId+"\")\'>"+
-                      "<i class='layui-icon'>&#xe63c;</i>"+
+                      "<a title='修改'  onclick='update("+data.deptList[i].deptId+")'>"+
+                      "<i class='layui-icon'>&#xe642;</i>"+
                       "</a>"+
                       "<a title='删除'  onclick='del("+data.deptList[i].deptId+")'>"+
                       "<i class='layui-icon'>&#xe640;</i>"+
@@ -126,6 +126,40 @@
           }
         });
       }
+
+        function update(deptId){
+            var deptName1 = $("#"+deptId).html();
+          if(!$("#"+deptId).is('.input')){
+            $("#"+deptId).addClass('input').html('<input type="text" value="'+ $("#"+deptId).text() +'" id="'+deptId+'" name="'+deptId+'"  autocomplete="off" class="layui-input" style="width: 140px;"/>').find('input').focus().blur(function(){
+              var deptName=$(this).val();
+              //var thisclass = $(this).parent().attr("class");
+              console.log(deptName);
+              if(deptName1 == deptName){
+                  layer.alert("放弃修改");
+              }else{
+                  $.ajax({
+                      url: '/updateDept',
+                      type: 'get',
+                      data: {deptId:deptId,deptName:deptName},
+                      async: false,
+                      success: function (res) {
+                          layui.use(['form','layer'], function() {
+                              var layer = layui.layer;
+                              if(res.flag == 1){
+                                  layer.msg(res.content,{icon: 6,time:1000},function(){});
+                              }else{
+                                  layer.msg(res.content,{icon: 5,time:1000},function(){});
+                              }
+                          });
+                      }
+                  });
+              }
+
+              $(this).parent().removeClass('input').html($(this).val() || 0);
+            });
+          }
+
+        }
 
 
           //删除单个院系

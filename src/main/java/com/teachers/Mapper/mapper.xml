@@ -27,4 +27,70 @@
             #{arr}
         </foreach>
     </delete>
+
+    <!-- 批量删除课程 -->
+    <delete id="delCourses" parameterType="List">
+        delete from course where courseId in
+        <foreach collection="list" item="arr" open="(" separator="," close=")">
+            #{arr}
+        </foreach>
+    </delete>
+
+    <!-- 批量删除用户 -->
+    <delete id="delUsers" parameterType="List">
+        delete from `user` where userId in
+        <foreach collection="list" item="arr" open="(" separator="," close=")">
+            #{arr}
+        </foreach>
+    </delete>
+
+    <!--课程列表-->
+    <resultMap id="Courses" type="com.teachers.Model.Course">
+        <id property="courseId" column="courseId"/>
+        <result property="courseName" column="courseName"/>
+        <result property="courseType" column="courseType"/>
+        <result property="classId" column="classId"/>
+        <result property="userId" column="userId"/>
+        <result property="termId" column="termId"/>
+        <association property="classes" javaType="com.teachers.Model.Class">
+            <id property="classId" column="classId"/>
+            <result property="className" column="className"/>
+        </association>
+        <association property="terms" javaType="com.teachers.Model.Term">
+            <id property="termId" column="termId"/>
+            <result property="termName" column="termName"/>
+        </association>
+        <association property="users" javaType="com.teachers.Model.User">
+            <id property="userId" column="userId"/>
+            <result property="userName" column="userName"/>
+            <result property="userNO" column="userNO"/>
+            <result property="userSex" column="userSex"/>
+        </association>
+    </resultMap>
+
+    <select id="selectCourse" resultMap="Courses">
+        select * from course co,class cl,user us,term te
+        where cl.classId = co.classId
+        and us.userId = co.userId
+        and te.termId = co.termId
+    </select>
+
+    <select id="courseTotal" resultType="int">
+        select count(*) from course
+    </select>
+
+
+    <!--用户列表-->
+    <!--
+    <resultMap id="users" type="com.teachers.Model.User">
+        <id property="userId" column="userId"/>
+        <result property="userNO" column="userNO"/>
+        <result property="userName" column="userName"/>
+        <result property="userPass" column="userPass"/>
+        <result property="userSex" column="userSex"/>
+        <result property="roleId" column="roleId"/>
+        <result property="deptId" column="deptId"/>
+        <result property="classId" column="classId"/>
+    </resultMap>
+    -->
 </mapper>

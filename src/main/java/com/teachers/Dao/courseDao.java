@@ -10,16 +10,6 @@ public interface courseDao {
     @Insert("insert into course(courseName,courseType,classId,userId,termId) values(#{courseName},#{courseType},#{classId},#{userId},#{termId})")
     public int addCourse(Course course);
 
-    /*
-     *@唐浩  课程列表分页
-     **/
-    @Select("select * \n" +
-            "from course co,class cl,user us,term te\n" +
-            "where cl.classId = co.classId\n" +
-            "and us.userId = co.userId\n" +
-            "and te.termId = co.termId")
-
-    public List<Course> selectCourse();
-    @Select("select count(*) from course")
-    public int courseTotal();
+    @Delete("delete from course where courseId = #{courseId}")
+    public int delOneCourse(Integer courseId);
 }

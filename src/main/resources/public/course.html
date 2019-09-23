@@ -110,14 +110,13 @@
           async: false,
           success: function (data) {
             console.log(data);
-           /* var tr = "";
+            var tr = "";
             for(var i = 0;i<data.courseList.length;i++){
               tr += "<tr>";
               tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.courseList[i].courseId+"'></th>";
               tr += "<th>"+data.courseList[i].courseId+"</th>";
               tr += "<th>"+data.courseList[i].courseName+"</th>";
               tr += "<th>"+data.courseList[i].courseType+"</th>";
-              tr += "<th>"+data.courseList[i].className+"</th>";
               tr += "<th>"+data.courseList[i].users.userName+"</th>";
               tr += "<th>"+data.courseList[i].classes.className+"</th>";
               tr += "<th>"+data.courseList[i].terms.termName+"</th>";
@@ -134,7 +133,7 @@
                 var  form = layui.form;
                 form.render("checkbox");
               });
-            }*/
+            }
           }
         });
       }
@@ -180,6 +179,67 @@
 
         });
       })
+
+      //删除单个班级
+      function del(courseId) {
+        console.log("id值" + courseId);
+        layer.confirm('是否删除该门课程', {icon: 6}, function (index) {
+          $.ajax({
+            url: '/delOneCourse',
+            type: 'get',
+            data: {courseId: courseId},
+            async: false,
+            success: function (res) {
+              layui.use(['form','layer'], function() {
+                var layer = layui.layer;
+                if(res.flag == 1){
+                  layer.msg(res.content,{icon: 6,time:2000},function(){location.reload();});
+                }else{
+                  layer.msg(res.content,{icon: 5,time:2000},function(){location.reload();});
+                }
+              });
+            }
+          });
+        });
+      }
+
+
+      //批量删除
+      function delAll(){
+        var idArr=""
+        $('input[name="checkd"]').each(function(){
+          if($(this).prop("checked")){
+            idArr=idArr+$(this).val()+",";
+          }
+        });
+
+        var ids = idArr.substr(0,idArr.length-1);
+        console.log(ids)
+
+        layer.confirm('确认要删除吗？',function(index){
+          $.ajax({
+            url: '/delCourses',
+            type: 'get',
+            data: {ids: ids},
+            async: false,
+            success: function (res) {
+              layui.use(['form','layer'], function() {
+                var layer = layui.layer;
+                if (res.flag == 1) {
+                  layer.msg(res.content, {icon: 6, time: 2000}, function () {
+                    location.reload();
+                  });
+                } else {
+                  layer.msg(res.content, {icon: 5, time: 2000}, function () {
+                    location.reload();
+                  });
+                }
+              });
+            }
+          });
+
+        });
+      }
 
     </script>
   </body>

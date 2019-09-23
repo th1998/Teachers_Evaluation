@@ -68,6 +68,17 @@ public class deptController {
             return in;
     }
 
+    @RequestMapping("/updateDept")
+    @ResponseBody
+    public ResultMsg updateDept(Integer deptId,String deptName){
+        int i = deptservice.updateDept(deptId,deptName);
+        if(i>0){
+           return new ResultMsg(1,"修改成功");
+        }else{
+            return new ResultMsg(1,"修改失败");
+        }
+    }
+
     /*
      *@张彤  查询院系
      **/

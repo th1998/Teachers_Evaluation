@@ -36,27 +36,14 @@ public class courseController {
         }
     }
 
-    /*
-     *@唐浩  班级列表分页
-     **/
-    @RequestMapping("/courseTotle")
+    @RequestMapping("/delOneCourse")
     @ResponseBody
-    public pageBean courseTotle() {
-        pageBean page = courseservice.selectCourse();
-        return page;
-    }
-
-    @RequestMapping("/courseList")
-    @ResponseBody
-    public pageBean classList(Integer page){
-        PageHelper.startPage(page, 8);
-        List<Course> courses= courseservice.getCourse(page);
-        int i = courseservice.courseTotal();
-        String f = "no";
-        pageBean in = new pageBean();
-        in.setTotal(i);
-        in.setFlag(f);
-        in.setCourseList(courses);
-        return in;
+    public ResultMsg delOneCourse(Integer courseId){
+        int i = courseservice.delOneCourse(courseId);
+        if(i>0){
+            return new ResultMsg(1,"删除成功");
+        }else{
+            return new ResultMsg(1,"删除失败");
+        }
     }
 }

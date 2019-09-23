@@ -15,6 +15,8 @@
 </head>
 
 <body>
+<div class="totle" style="display: none;"></div>
+<div class="panduan" style="display: none;"></div>
 <div class="x-nav">
       <span class="layui-breadcrumb">
         <a href="">首页</a>
@@ -34,56 +36,226 @@
   <xblock>
     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
     <button class="layui-btn" onclick="x_admin_show('添加用户','./user-add.html',600,425)"><i class="layui-icon"></i>添加</button>
-    <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+    <span class="x-right" style="line-height:40px"></span>
   </xblock>
-  <table class="layui-table x-admin">
+  <table class="layui-table layui-form">
     <thead>
     <tr>
       <th width="10%">
-        <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+        <input type="checkbox" id="checkall" lay-filter="checkalls"  name="checkall" lay-skin="primary" >
       </th>
       <th width="10%">ID</th>
-      <th width="70%">院系名</th>
-      <th width="10%">操作</th></tr>
+      <th width="15%">学号/工号</th>
+      <th width="10%">用户名</th>
+      <th width="10%">性别</th>
+      <th width="10%">角色类型</th>
+      <th width="15%">学院名称</th>
+      <th width="10%">班级代号</th>
+      <th width="10%">操作</th>
+    </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>
-        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
-      </td>
-      <td>1</td>
-      <td>软件学院</td>
-      <td class="td-manage">
-        <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-          <i class="layui-icon">&#xe601;</i>
-        </a>
-        <a title="编辑"  onclick="x_admin_show('编辑','member-edit.html',600,400)" href="javascript:;">
-          <i class="layui-icon">&#xe642;</i>
-        </a>
-        <a onclick="x_admin_show('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
-          <i class="layui-icon">&#xe631;</i>
-        </a>
-        <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-          <i class="layui-icon">&#xe640;</i>
-        </a>
-      </td>
-    </tr>
+
 
     </tbody>
   </table>
-  <div class="page">
-    <div>
-      <a class="prev" href="">&lt;&lt;</a>
-      <a class="num" href="">1</a>
-      <span class="current">2</span>
-      <a class="num" href="">3</a>
-      <a class="num" href="">489</a>
-      <a class="next" href="">&gt;&gt;</a>
-    </div>
+  <div id="page_div" style="float: right;"></div>
   </div>
 
 </div>
+<script>
+  $.ajax({
+    type:"POST",
+    url:"/getAllUser",
+    async: false,
+    success:function(res){
+      console.log(res)
+      $(".totle").html(res.total);
+      $(".panduan").html(res.flag);
+    }
+  });
 
+
+  var total = $(".totle").html();
+  var pageNum=1;
+  if(total%8 == 0){
+    var page = total/8;
+  }else{
+    var page = parseInt(total/8)+1;
+  }
+  $(".x-right").html("共有数据:"+total+"条 共:"+page+"页");
+
+
+  layui.use('laypage',function(){
+    var laypage=layui.laypage;
+
+    laypage.render({
+      elem: 'page_div',
+      count: total,
+      curr:pageNum,
+      limit:8,
+      theme:'#222222',
+      jump: function(obj, first){
+
+        onShow(obj.curr);
+
+      }
+    });
+
+  });
+
+  onShow = function(page) {
+    $.ajax({
+      url: '/User_viewList',
+      type: 'get',
+      data: {page: page},
+      async: false,
+      success: function (data) {
+        console.log(data);
+        var tr = "";
+        for(var i = 0;i<data.user_viewList.length;i++){
+          tr += "<tr>";
+          tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.user_viewList[i].userId+"'></th>";
+          tr += "<th>"+data.user_viewList[i].userId+"</th>";
+          tr += "<th>"+data.user_viewList[i].userNO+"</th>";
+          tr += "<th>"+data.user_viewList[i].userName+"</th>";
+          if(data.user_viewList[i].userSex=="0"){
+            tr += "<th>男</th>";
+          }else{
+            tr += "<th>女</th>";
+          }
+          tr += "<th>"+data.user_viewList[i].roleName+"</th>";
+          if(data.user_viewList[i].deptName==null){
+            tr += "<th></th>";
+          }else{
+            tr += "<th>"+data.user_viewList[i].deptName+"</th>";
+          }
+          if(data.user_viewList[i].className==null){
+            tr += "<th></th>";
+          }else{
+            tr += "<th>"+data.user_viewList[i].className+"</th>";
+          }
+          tr += "<td class='td-manage'>"+
+                  "<a title='编辑'  onclick=\'x_admin_show(\"编辑\",\"${pageContext.request.contextPath}/question_bank_update?id="+data.user_viewList[i].userId+"\")\'>"+
+                  "<i class='layui-icon'>&#xe63c;</i>"+
+                  "</a>"+
+                  "<a title='删除'  onclick='del("+data.user_viewList[i].userId+")'>"+
+                  "<i class='layui-icon'>&#xe640;</i>"+
+                  "</a>"+
+                  "</td>"
+          layui.jquery("tbody").html(tr);
+          layui.use('form', function(){
+            var  form = layui.form;
+            form.render("checkbox");
+          });
+        }
+      }
+    });
+  }
+
+  //勾选数据列
+  var a=[];
+  layui.use('form', function() {
+    form = layui.form;
+    //全选
+    form.on('checkbox(checkalls)', function (data) {
+      var a = data.elem.checked;
+      if (a == true) {
+        $(".checkd").prop("checked", true);
+        form.render('checkbox');
+      } else {
+        $(".checkd").prop("checked", false);
+        form.render('checkbox');
+      }
+    });
+
+    //有一个未选中全选取消选中
+    form.on('checkbox(Id)', function (data) {
+      var item = $(".checkd");
+      for (var i = 0; i < item.length; i++) {
+        if (item[i].checked == false) {
+          $("#checkall").prop("checked", false);
+          form.render('checkbox');
+          break;
+        }
+      }
+
+      //如果都勾选了  勾上全选
+      var  all=item.length;
+      for (var i = 0; i < item.length; i++) {
+        if (item[i].checked == true) {
+          all--;
+        }
+      }
+      if(all==0){
+        $("#checkall").prop("checked", true);
+        form.render('checkbox');
+      }
+
+    });
+  })
+
+
+  //删除单个用户
+  function del(userId) {
+    console.log("id值" + userId);
+    layer.confirm('确定要删除该用户吗？', {icon: 6}, function (index) {
+      $.ajax({
+        url: '/delOneUser',
+        type: 'get',
+        data: {userId: userId},
+        async: false,
+        success: function (res) {
+          layui.use(['form','layer'], function() {
+            var layer = layui.layer;
+            if(res.flag == 1){
+              layer.msg(res.content,{icon: 6,time:2000},function(){location.reload();});
+            }else{
+              layer.msg(res.content,{icon: 5,time:2000},function(){location.reload();});
+            }
+          });
+        }
+      });
+    });
+  }
+
+  //批量删除
+  function delAll(){
+    var idArr=""
+    $('input[name="checkd"]').each(function(){
+      if($(this).prop("checked")){
+        idArr=idArr+$(this).val()+",";
+      }
+    });
+
+    var ids = idArr.substr(0,idArr.length-1);
+    console.log(ids)
+
+    layer.confirm('确认要删除吗？',function(index){
+      $.ajax({
+        url: '/delUsers',
+        type: 'get',
+        data: {ids: ids},
+        async: false,
+        success: function (res) {
+          layui.use(['form','layer'], function() {
+            var layer = layui.layer;
+            if (res.flag == 1) {
+              layer.msg(res.content, {icon: 6, time: 2000}, function () {
+                location.reload();
+              });
+            } else {
+              layer.msg(res.content, {icon: 5, time: 2000}, function () {
+                location.reload();
+              });
+            }
+          });
+        }
+      });
+
+    });
+  }
+</script>
 </body>
 
 </html>

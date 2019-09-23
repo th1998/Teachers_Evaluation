@@ -17,24 +17,7 @@ public class courseService {
         return coursedao.addCourse(course);
     }
 
-    /*
-     *@唐浩  班级列表分页
-     **/
-    public pageBean selectCourse(){
-        int t = coursedao.courseTotal();
-        List<Course> a= coursedao.selectCourse();
-        String f = "no";
-        pageBean page = new pageBean();
-        page.setFlag(f);
-        page.setTotal(t);
-        page.setCourseList(a);
-        return page;
-    }
-    public List<Course> getCourse(Integer page){
-        List<Course> a= coursedao.selectCourse();
-        return a;
-    }
-    public int courseTotal(){
-        return coursedao.courseTotal();
+    public int delOneCourse(Integer courseId){
+        return coursedao.delOneCourse(courseId);
     }
 }

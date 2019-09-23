@@ -44,6 +44,10 @@ public class deptService {
         return deptdao.deptTotal();
     }
 
+    public int updateDept(Integer deptId,String deptName){
+        return deptdao.updateDept(deptId,deptName);
+    }
+
     /*
      *@张彤  查询院系
      **/

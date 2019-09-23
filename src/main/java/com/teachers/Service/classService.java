@@ -50,4 +50,7 @@ public class classService {
         return classdao.classTotal();
     }
 
+    public int updateClass(Integer classId,String className){
+        return  classdao.updateClass(classId,className);
+    }
 }

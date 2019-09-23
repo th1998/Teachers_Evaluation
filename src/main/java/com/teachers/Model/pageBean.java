@@ -11,6 +11,7 @@ public class pageBean {
     private List<Class> classList;
     private List<Term> termList;
     private List<Course> courseList;
+    private List<User_view> user_viewList;
 
 
 
@@ -60,5 +61,13 @@ public class pageBean {
 
     public void setCourseList(List<Course> courseList) {
         this.courseList = courseList;
+    }
+
+    public List<User_view> getUser_viewList() {
+        return user_viewList;
+    }
+
+    public void setUser_viewList(List<User_view> user_viewList) {
+        this.user_viewList = user_viewList;
     }
 }

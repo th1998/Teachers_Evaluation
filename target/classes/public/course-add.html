@@ -34,7 +34,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label" >课程类型</label>
                 <div class="layui-input-block" >
-                    <input type="text" id="courseType" name="courseType" placeholder="请输入课程类型" autocomplete="off" class="layui-input" lay-verify="required">
+                    <input type="radio"  name="courseType" value="必修" title="必修" checked>
+                    <input type="radio"  name="courseType" value="选修" title="选修" >
                 </div>
             </div>
 
@@ -141,11 +142,9 @@
                         layui.use(['form','layer'], function() {
                             var layer = layui.layer;
                             if (res.flag == 1) {
-                                layer.alert(res.content);
-                                $("form")[0].reset();
+                                layer.msg(res.content,{icon: 6,time:2000},function(){parent.location.reload();});
                             } else {
-                                layer.alert(res.content);
-                                $("form")[0].reset();
+                                layer.msg(res.content,{icon: 6,time:2000},function(){location.reload();});
                             }
                         })
                     }

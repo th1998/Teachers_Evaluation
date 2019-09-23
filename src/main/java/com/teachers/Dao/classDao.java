@@ -1,10 +1,7 @@
 package com.teachers.Dao;
 
 import com.teachers.Model.Class;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -31,6 +28,9 @@ public interface classDao {
     public List<Class> selectClass();
     @Select("select count(*) from class")
     public int classTotal();
+
+    @Update("update class set className = #{className} where classId = #{classId}")
+    public int updateClass(@Param("classId") Integer classId,@Param("className") String className);
 
 
 }

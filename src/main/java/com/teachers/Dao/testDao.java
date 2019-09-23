@@ -1,5 +1,6 @@
 package com.teachers.Dao;
 
+import com.teachers.Model.Course;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,4 +13,8 @@ public interface testDao {
     public int delAlla(List<Object> list);
     public int delClasses(List<Object> list);
     public int delTerms(List<Object> list);
+    public int delCourses(List<Object> list);
+    public int delUsers(List<Object> list);
+    public List<Course> selectCourse();
+    public int courseTotal();
 }

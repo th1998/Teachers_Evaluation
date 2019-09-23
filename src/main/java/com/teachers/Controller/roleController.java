@@ -36,9 +36,9 @@ public class roleController {
     public ResultMsg delRole(Integer roleId){
         int i = roleservice.delRole(roleId);
         if(i>0){
-            return new ResultMsg(1,"添加成功");
+            return new ResultMsg(1,"删除成功");
         }else{
-            return new ResultMsg(2,"添加失败");
+            return new ResultMsg(2,"删除失败");
         }
     }
     /*

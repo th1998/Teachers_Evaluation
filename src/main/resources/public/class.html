@@ -110,10 +110,10 @@
               tr += "<tr>";
               tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.classList[i].classId+"'></th>";
               tr += "<th>"+data.classList[i].classId+"</th>";
-              tr += "<th>"+data.classList[i].className+"</th>";
+              tr += "<th id='"+data.classList[i].classId+"'>"+data.classList[i].className+"</th>";
               tr += "<td class='td-manage'>"+
-                      "<a title='编辑'  onclick=\'x_admin_show(\"编辑\",\"${pageContext.request.contextPath}/question_bank_update?id="+data.classList[i].classId+"\")\'>"+
-                      "<i class='layui-icon'>&#xe63c;</i>"+
+                      "<a title='编辑'  onclick='update("+data.classList[i].classId+")'>"+
+                      "<i class='layui-icon'>&#xe642;</i>"+
                       "</a>"+
                       "<a title='删除'  onclick='del("+data.classList[i].classId+")'>"+
                       "<i class='layui-icon'>&#xe640;</i>"+
@@ -127,6 +127,39 @@
             }
           }
         });
+      }
+
+      function update(classId){
+        var className1 = $("#"+classId).html();
+        if(!$("#"+classId).is('.input')){
+          $("#"+classId).addClass('input').html('<input type="text" value="'+ $("#"+classId).text() +'" id="'+classId+'" name="'+classId+'"  autocomplete="off" class="layui-input" style="width: 140px;"/>').find('input').focus().blur(function(){
+            var className=$(this).val();
+            console.log(className);
+            if(className1 == className){
+              layer.alert("放弃修改");
+            }else{
+              $.ajax({
+                url: '/updateClass',
+                type: 'get',
+                data: {classId:classId,className:className},
+                async: false,
+                success: function (res) {
+                  layui.use(['form','layer'], function() {
+                    var layer = layui.layer;
+                    if(res.flag == 1){
+                      layer.msg(res.content,{icon: 6,time:1000},function(){});
+                    }else{
+                      layer.msg(res.content,{icon: 5,time:1000},function(){});
+                    }
+                  });
+                }
+              });
+            }
+
+            $(this).parent().removeClass('input').html($(this).val() || 0);
+          });
+        }
+
       }
 
       //勾选数据列

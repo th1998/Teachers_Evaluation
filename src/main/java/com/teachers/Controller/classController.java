@@ -77,5 +77,16 @@ public class classController {
         return in;
     }
 
+    @RequestMapping("/updateClass")
+    @ResponseBody
+    public ResultMsg updateDept(Integer classId,String className){
+        int i = classservice.updateClass(classId,className);
+        if(i>0){
+            return new ResultMsg(1,"修改成功");
+        }else{
+            return new ResultMsg(1,"修改失败");
+        }
+    }
+
 
 }
