@@ -121,7 +121,7 @@
               tr += "<th>"+data.courseList[i].classes.className+"</th>";
               tr += "<th>"+data.courseList[i].terms.termName+"</th>";
               tr += "<td class='td-manage'>"+
-                      "<a title='编辑'  onclick=\'x_admin_show(\"编辑\",\"${pageContext.request.contextPath}/question_bank_update?id="+data.courseList[i].courseId+"\")\'>"+
+                      "<a title='编辑'  onclick=\'x_admin_show(\"编辑\",\"/course-update.html?id="+data.courseList[i].courseId+"\",600,400)\'>"+
                       "<i class='layui-icon'>&#xe63c;</i>"+
                       "</a>"+
                       "<a title='删除'  onclick='del("+data.courseList[i].courseId+")'>"+

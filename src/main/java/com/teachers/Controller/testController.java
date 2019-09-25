@@ -24,7 +24,6 @@ public class testController {
     @RequestMapping("/delAlla")
     @ResponseBody
     public ResultMsg delAlla(String ids) {
-        System.out.println(ids);
 
         List<Object> list = new ArrayList<>();
         String[] str = ids.split(",");
@@ -44,7 +43,7 @@ public class testController {
     @RequestMapping("/delClasses")
     @ResponseBody
     public ResultMsg delClasses(String ids) {
-        System.out.println(ids);
+
 
         List<Object> list = new ArrayList<>();
         String[] str = ids.split(",");
@@ -64,7 +63,6 @@ public class testController {
     @RequestMapping("/delTerms")
     @ResponseBody
     public ResultMsg delTerms(String ids) {
-        System.out.println(ids);
 
         List<Object> list = new ArrayList<>();
         String[] str = ids.split(",");
@@ -84,7 +82,6 @@ public class testController {
     @RequestMapping("/delCourses")
     @ResponseBody
     public ResultMsg delCourses(String ids) {
-        System.out.println(ids);
 
         List<Object> list = new ArrayList<>();
         String[] str = ids.split(",");
@@ -104,7 +101,6 @@ public class testController {
     @RequestMapping("/delUsers")
     @ResponseBody
     public ResultMsg delUsers(String ids) {
-        System.out.println(ids);
 
         List<Object> list = new ArrayList<>();
         String[] str = ids.split(",");
@@ -118,6 +114,14 @@ public class testController {
         }else {
             return new ResultMsg(0, "删除失败！");
         }
+    }
+
+    //查询单个课程
+    @RequestMapping("/findOneCourse")
+    @ResponseBody
+    public List<Course> findOneCourse(Integer courseId){
+        List<Course> c = testservice.findOneCourse(courseId);
+        return c;
     }
 
     //课程列表

@@ -30,6 +30,10 @@ public class testService {
     public int delCourses(List<Object> list){ return  testdao.delCourses(list);}
     public int delUsers(List<Object> list){ return  testdao.delUsers(list);}
 
+    public List<Course> findOneCourse(Integer courseId){
+        return testdao.findOneCourse(courseId);
+    }
+
     public pageBean selectCourse(){
         int t = testdao.courseTotal();
         List<Course> a= testdao.selectCourse();

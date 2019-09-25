@@ -50,7 +50,7 @@
                 $.ajax({
                     type:"POST",
                     url:"/addTerm",
-                    data:{termName:termName},
+                    data:{termName:termName,termStatus:0},
                     success:function(res){
                         if(res.flag == 1){
                             layer.msg(res.content, {icon: 1,time: 2000 }, function(){

@@ -1,17 +1,15 @@
 package com.teachers.Controller;
 
-import com.github.pagehelper.PageHelper;
-import com.teachers.Model.Class;
+
 import com.teachers.Model.Course;
 import com.teachers.Model.ResultMsg;
-import com.teachers.Model.pageBean;
+
 import com.teachers.Service.courseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
 
 @Controller
 public class courseController {

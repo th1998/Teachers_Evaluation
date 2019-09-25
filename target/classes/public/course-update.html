@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.1</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script type="text/javascript" src="/js/jquery-3.4.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript" src="/js/cookie.js"></script>
+    <style>
+        .layui-form-select dl { max-height:120px; }
+    </style>
+  </head>
+
+  <body>
+    <div class="x-body">
+        <!--表单开始-->
+        <form class="layui-form" lay-filter="form1">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" >课程名称</label>
+                <div class="layui-input-block"   >
+                    <input type="text" id="courseName" name="courseName" placeholder="请输入课程名称" autocomplete="off" class="layui-input" lay-verify="required" >
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" >课程类型</label>
+                <div class="layui-input-block" >
+                    <input type="radio"  name="courseType" value="必修" title="必修" >
+                    <input type="radio" id="cor" name="courseType" value="选修" title="选修" >
+                </div>
+            </div>
+
+            <div class="layui-form-item"  id="role_box">
+                <label class="layui-form-label" >任课老师</label>
+                <div class="layui-input-block">
+                    <select name="userId"  id="user" lay-filter="user"  lay-verify="required"></select>
+                </div>
+            </div>
+
+            <div class="layui-form-item" id="class_box">
+                <label class="layui-form-label" >班级代号</label>
+                <div class="layui-input-block">
+                    <select name="classId"  id="class" lay-filter="class"  lay-verify="required"></select>
+                </div>
+            </div>
+
+            <div class="layui-form-item" id="term_box">
+                <label class="layui-form-label" >课程学期</label>
+                <div class="layui-input-block">
+                    <select name="termId" id="term" lay-filter="term"  lay-verify="term"></select>
+                </div>
+            </div>
+
+          <div class="layui-form-label">
+              <button  class="layui-btn" lay-filter="addCourse" lay-submit>
+                  修改
+              </button>
+          </div>
+
+      </form>
+
+    </div>
+    <script>
+        layui.use(['form','layer'], function(){
+            $ = layui.jquery;
+          var form = layui.form
+          ,layer = layui.layer;
+           form.render();
+            var url = document.location.toString();//获取url地址
+            var urlParmStr = url.slice(url.indexOf('?')+1);//获取问号后所有的字符串
+            var str = urlParmStr.slice(urlParmStr.indexOf('=')+1)
+            var courseId=decodeURI(str);//转码将解码方式unscape换为decodeURI，将中文参数获取
+            console.log(url);
+
+
+
+            /*
+                查询所有教师。
+             */
+            $.ajax({
+                type:"POST",
+                url:"/getTeacher",
+                success:function(res){
+                    var html = "<option value=' ' checked></option>";
+                    for( var i=0;i<res.length;i++){
+                        html +="<option value="+res[i].userId+">"+res[i].userName+"</option>";
+                    }
+                    $("#user").append(html);
+                    form.render('select')
+                }
+            });
+
+            /*
+               查询所有班级，并且显示。
+            */
+            $.ajax({
+                type:"POST",
+                url:"/findClass",
+                success:function(res){
+                   //   console.log(res);
+                    var html = "<option value=' ' checked></option>";
+                    for( var i=0;i<res.length;i++){
+                        html +="<option value="+res[i].classId+">"+res[i].className+"</option>";
+                    }
+                    $("#class").append(html);
+                    form.render('select')
+                }
+            });
+
+            /*
+               查询所有学期，并且显示。
+            */
+            $.ajax({
+                type:"POST",
+                url:"/terms",
+                success:function(res){
+                  //  console.log(res);
+                    var html = "<option value=' ' checked></option>";
+                    for( var i=0;i<res.length;i++){
+                        html +="<option value="+res[i].termId+" name='termOption'>"+res[i].termName+"</option>";
+                    }
+                    $("#term").append(html);
+                   form.render('select')
+                }
+            });
+
+
+            $.ajax({
+                type:"POST",
+                url:"/findOneCourse",
+                data:{courseId:courseId},
+                success:function(res){
+                    console.log("修改课程："+res)
+                    form.render();
+                    $('#courseName').val(res[0].courseName);
+                    $("input[name=courseType]:radio[value='"+res[0].courseType+"']").prop("checked",true);
+                   // form.render();
+                    $("#term option[value='"+res[0].terms.termId+"']").prop("selected",true);
+                    //form.render('select');
+                    $("#user option[value='"+res[0].users.userId+"']").prop("selected",true);
+                    //form.render('select');
+                    $("#class option[value='"+res[0].classes.classId+"']").prop("selected",true);
+                   // form.render(null,'form1');
+                    form.render();
+                }
+            });
+
+
+            // 添加课程
+           /* form.on('submit(addCourse)', function(data){
+                console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                $.ajax({
+                    type:"POST",
+                    url:"/addCourse",
+                    data:data.field,
+                    success:function (res) {
+                        console.log(res);
+                        layui.use(['form','layer'], function() {
+                            var layer = layui.layer;
+                            if (res.flag == 1) {
+                                layer.msg(res.content,{icon: 6,time:2000},function(){parent.location.reload();});
+                            } else {
+                                layer.msg(res.content,{icon: 6,time:2000},function(){location.reload();});
+                            }
+                        })
+                    }
+                });
+                return false;
+            });*/
+            form.render();
+        });
+
+    </script>
+
+  </body>
+
+</html>

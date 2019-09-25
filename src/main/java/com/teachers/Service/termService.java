@@ -15,7 +15,7 @@ public class termService {
     /*
      *@余时南  添加学期、删除学期
      **/
-    public int add_term(String termName){ return termdao.add_term(termName); }
+    public int add_term(String termName,Integer termStatus){ return termdao.add_term(termName,termStatus); }
     public int delOneTerm(Integer termId){
         return termdao.delOneTerm(termId);
     }
@@ -45,5 +45,13 @@ public class termService {
     public List<Term> terms(){
         List<Term> a= termdao.selectTerm();
         return a;
+    }
+
+    public int updateTerm(Integer termId,String termName){
+        return termdao.updateTerm(termId,termName);
+    }
+
+    public int updateStatus(Integer termId,Integer termStatus){
+        return  termdao.updateStatus(termId,termStatus);
     }
 }

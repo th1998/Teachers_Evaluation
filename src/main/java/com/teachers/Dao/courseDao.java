@@ -12,4 +12,5 @@ public interface courseDao {
 
     @Delete("delete from course where courseId = #{courseId}")
     public int delOneCourse(Integer courseId);
+
 }

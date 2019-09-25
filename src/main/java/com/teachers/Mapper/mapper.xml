@@ -79,6 +79,13 @@
         select count(*) from course
     </select>
 
+    <select id="findOneCourse" resultMap="Courses" parameterType="int">
+        select * from course co,class cl,user us,term te
+        where cl.classId = co.classId
+        and us.userId = co.userId
+        and te.termId = co.termId
+        and co.courseId = #{courseId}
+    </select>
 
     <!--用户列表-->
     <!--

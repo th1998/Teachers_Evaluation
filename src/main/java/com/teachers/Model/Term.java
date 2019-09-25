@@ -1,13 +1,14 @@
 package com.teachers.Model;
 
 public class Term {
-    private  String termId;
+    private  Integer termId;
     private String termName;
-    public String getTermId() {
+    private Integer termStatus;
+    public Integer getTermId() {
         return termId;
     }
 
-    public void setTermId(String termId) {
+    public void setTermId(Integer termId) {
         this.termId = termId;
     }
 
@@ -19,5 +20,11 @@ public class Term {
         this.termName = termName;
     }
 
+    public Integer getTermStatus() {
+        return termStatus;
+    }
 
+    public void setTermStatus(Integer termStatus) {
+        this.termStatus = termStatus;
+    }
 }

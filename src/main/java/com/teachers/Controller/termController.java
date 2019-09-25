@@ -21,8 +21,8 @@ public class termController {
      **/
     @RequestMapping("/addTerm")
     @ResponseBody
-    public ResultMsg add_term(String termName){
-        int i= termservice.add_term(termName);
+    public ResultMsg add_term(String termName,Integer termStatus){
+        int i= termservice.add_term(termName,termStatus);
         if(i>0){
             return new ResultMsg(1,"添加成功");
         }else{
@@ -69,5 +69,27 @@ public class termController {
     public List<Term> terms(){
         List<Term> terms= termservice.terms();
         return terms;
+    }
+
+    @RequestMapping("/updateTerm")
+    @ResponseBody
+    public ResultMsg updateTerm(Integer termId,String termName){
+        int i = termservice.updateTerm(termId,termName);
+        if(i>0){
+            return new ResultMsg(1,"修改成功");
+        }else{
+            return new ResultMsg(1,"修改失败");
+        }
+    }
+
+    @RequestMapping("/updateStatus")
+    @ResponseBody
+    public ResultMsg updateStatus(Integer termId,Integer termStatus){
+        int i = termservice.updateStatus(termId,termStatus);
+        if(i>0){
+            return new ResultMsg(1,"状态改变成功");
+        }else{
+            return new ResultMsg(1,"状态改变失败");
+        }
     }
 }
