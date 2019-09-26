@@ -44,6 +44,22 @@
         </foreach>
     </delete>
 
+    <!-- 批量删除选项 -->
+    <delete id="delOptions" parameterType="List">
+        delete from quotaoption where optionId in
+        <foreach collection="list" item="arr" open="(" separator="," close=")">
+            #{arr}
+        </foreach>
+    </delete>
+
+    <!-- 批量删除评价问题 -->
+    <delete id="delQuotas" parameterType="List">
+        delete from quota where quotaId in
+        <foreach collection="list" item="arr" open="(" separator="," close=")">
+            #{arr}
+        </foreach>
+    </delete>
+
     <!--课程列表-->
     <resultMap id="Courses" type="com.teachers.Model.Course">
         <id property="courseId" column="courseId"/>

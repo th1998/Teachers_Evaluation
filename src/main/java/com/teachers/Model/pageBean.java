@@ -12,6 +12,9 @@ public class pageBean {
     private List<Term> termList;
     private List<Course> courseList;
     private List<User_view> user_viewList;
+    private List<Option> optionList;
+    private List<Quota> quotaList;
+
 
 
 
@@ -69,5 +72,21 @@ public class pageBean {
 
     public void setUser_viewList(List<User_view> user_viewList) {
         this.user_viewList = user_viewList;
+    }
+
+    public List<Option> getOptionList() {
+        return optionList;
+    }
+
+    public void setOptionList(List<Option> optionList) {
+        this.optionList = optionList;
+    }
+
+    public List<Quota> getQuotaList() {
+        return quotaList;
+    }
+
+    public void setQuotaList(List<Quota> quotaList) {
+        this.quotaList = quotaList;
     }
 }
