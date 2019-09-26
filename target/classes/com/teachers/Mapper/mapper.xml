@@ -87,9 +87,14 @@
         and co.courseId = #{courseId}
     </select>
 
+    <select id="selectRoleSl" resultType="int" parameterType="int">
+        select count(*) from department d,user u
+        where u.deptId = d.deptId
+        and d.deptId = #{deptId}
+    </select>
     <!--用户列表-->
-    <!--
-    <resultMap id="users" type="com.teachers.Model.User">
+<!--
+    <resultMap id="users" type="com.teachers.Model.User_view">
         <id property="userId" column="userId"/>
         <result property="userNO" column="userNO"/>
         <result property="userName" column="userName"/>
@@ -98,6 +103,27 @@
         <result property="roleId" column="roleId"/>
         <result property="deptId" column="deptId"/>
         <result property="classId" column="classId"/>
+        <result property="className" column="className"/>
+        <result property="roleName" column="roleName"/>
+        <result property="deptName" column="deptName"/>
     </resultMap>
-    -->
+-->
+
+    <select id="likeFaculty" parameterType="String" resultType="com.teachers.Model.Dept">
+        select * from department
+        <where>
+            <if test="deptName != null">
+                and deptName like '%${deptName}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="likeFacultySL" parameterType="String" resultType="int">
+        select count(*) from department
+        <where>
+            <if test="deptName!=null">
+                and deptName like '%${deptName}%'
+            </if>
+        </where>
+    </select>
 </mapper>

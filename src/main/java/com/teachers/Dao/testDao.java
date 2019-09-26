@@ -1,7 +1,9 @@
 package com.teachers.Dao;
 
 import com.teachers.Model.Course;
+import com.teachers.Model.Dept;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +20,9 @@ public interface testDao {
     public int delUsers(List<Object> list);
     public List<Course> selectCourse();
     public int courseTotal();
+
+    public List<Dept> likeFaculty(@Param("deptName") String deptName);
+    public int likeFacultySL(@Param("deptName") String deptName);
+
+    public int selectRoleSl(Integer deptId);
 }

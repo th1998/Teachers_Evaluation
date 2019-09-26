@@ -1,6 +1,7 @@
 package com.teachers.Service;
 
 import com.teachers.Dao.deptDao;
+import com.teachers.Dao.testDao;
 import com.teachers.Model.Dept;
 import com.teachers.Model.pageBean;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import java.util.List;
 public class deptService {
     @Resource
     deptDao deptdao;
+    @Resource
+    testDao testdao;
 
     /*
      *@胡志航  添加院系、删除单个院系
@@ -46,6 +49,18 @@ public class deptService {
 
     public int updateDept(Integer deptId,String deptName){
         return deptdao.updateDept(deptId,deptName);
+    }
+
+    public List<Dept> likeFaculty(String deptName){
+        return testdao.likeFaculty(deptName);
+    }
+    public int likeFacultySL(String deptName){
+        return testdao.likeFacultySL(deptName);
+    }
+
+
+    public int selectRoleSl(Integer deptId){
+        return testdao.selectRoleSl(deptId);
     }
 
     /*

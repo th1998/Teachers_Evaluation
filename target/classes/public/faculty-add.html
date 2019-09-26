@@ -40,33 +40,41 @@
       </form>
     </div>
     <script>
-        layui.use(['form','layer'], function(){
+        layui.use(['form','layer','table'], function(){
             $ = layui.jquery;
             var form = layui.form;
             var layer = layui.layer;
+            var table = layui.table
 
             form.on('submit(addDept)', function(data) {
                 var deptName = $("#deptName").val();
-                console.log(deptName)
-                $.ajax({
-                    type:"POST",
-                    url:"/addDept",
-                    data:{deptName:deptName},
-                    //async: false,
-                    success:function(res){
+                //console.log(deptName.length);
+                if(deptName.length>0&&deptName.length<10){
+                    $.ajax({
+                        type:"POST",
+                        url:"/addDept",
+                        data:{deptName:deptName},
+                        //async: false,
+                        success:function(res){
 
-                        if(res.flag == 1){
-                            layer.msg(res.content, {icon: 1,time: 2000 }, function(){
-                                $("#deptName").val("");
-                                parent.location.reload();
-                            });
-                        }else{
-                            layer.msg(res.content, {icon: 2,time: 2000 }, function(){
-                                $("#deptName").val("");
-                            });
+                            if(res.flag == 1){
+                                layer.msg(res.content, {icon: 1,time: 2000 }, function(){
+                                    $("#deptName").val("");
+                                     parent.location.reload();
+                                });
+                            }else{
+                                layer.msg(res.content, {icon: 2,time: 2000 }, function(){
+                                    $("#deptName").val("");
+                                });
+                            }
                         }
-                    }
-                });
+                    });
+                }else {
+                    layer.msg('错误', {icon: 2,time: 2000 }, function(){
+                        $("#deptName").val("");
+                    });
+                }
+
                 return false;
             });
 

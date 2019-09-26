@@ -25,7 +25,6 @@ public class deptController {
     @RequestMapping("/addDept")
     @ResponseBody
     public ResultMsg addRole(String deptName){
-        System.out.println(deptName);
         int i = deptservice.addDept(deptName);
         System.out.println("controll :"+i);
         if(i>0){
@@ -37,12 +36,19 @@ public class deptController {
     @RequestMapping("/delOneDept")
     @ResponseBody
     public ResultMsg delOneDept(Integer deptId){
-        int i = deptservice.delOneDept(deptId);
-        if(i>0){
-            return new ResultMsg(1,"删除成功");
+
+        int j = deptservice.selectRoleSl(deptId);
+        if(j>0){
+            return new ResultMsg(2,"删除失败,该院系存在用户，不可删除！");
         }else{
-            return new ResultMsg(2,"删除失败");
+            int i = deptservice.delOneDept(deptId);
+            if(i>0){
+                return new ResultMsg(1,"删除成功");
+            }else{
+                return new ResultMsg(1,"删除失败");
+            }
         }
+
     }
 
     /*
@@ -77,6 +83,19 @@ public class deptController {
         }else{
             return new ResultMsg(1,"修改失败");
         }
+    }
+
+    @RequestMapping("/likeFaculty")
+    @ResponseBody
+    public pageBean likeFaculty(String deptName){
+        List<Dept> dept = deptservice.likeFaculty(deptName);
+        int i = deptservice.likeFacultySL(deptName);
+        String f = "yes";
+        pageBean in = new pageBean();
+        in.setTotal(i);
+        in.setFlag(f);
+        in.setDeptList(dept);
+        return in;
     }
 
     /*

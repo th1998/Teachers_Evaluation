@@ -24,7 +24,7 @@ public class classController {
     @RequestMapping("/addClass")
     @ResponseBody
     public ResultMsg addClass(String className){
-        System.out.println(className);
+
         int i = classservice.addclass(className);
         if(i>0){
             return new ResultMsg(1,"添加成功");

@@ -35,7 +35,7 @@
                 <label class="layui-form-label" >课程类型</label>
                 <div class="layui-input-block" >
                     <input type="radio"  name="courseType" value="必修" title="必修" >
-                    <input type="radio" id="cor" name="courseType" value="选修" title="选修" >
+                    <input type="radio"  name="courseType" value="选修" title="选修" >
                 </div>
             </div>
 
@@ -61,7 +61,7 @@
             </div>
 
           <div class="layui-form-label">
-              <button  class="layui-btn" lay-filter="addCourse" lay-submit>
+              <button  class="layui-btn" lay-filter="updateCourse" lay-submit>
                   修改
               </button>
           </div>
@@ -155,19 +155,25 @@
             });
 
 
-            // 添加课程
-           /* form.on('submit(addCourse)', function(data){
-                console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            // 修改课程
+            form.on('submit(updateCourse)', function(data){
+                var courseName = $('#courseName').val();
+                var courseType = $('input:radio:checked').val();
+                var userId = $('#user').val();
+                var classId = $('#class').val();
+                var termId = $('#term').val();
                 $.ajax({
                     type:"POST",
-                    url:"/addCourse",
-                    data:data.field,
+                    url:"/updateCourse",
+                    data:{courseName:courseName,courseType:courseType,userId:userId,classId:classId,termId:termId,courseId:courseId},
                     success:function (res) {
                         console.log(res);
                         layui.use(['form','layer'], function() {
                             var layer = layui.layer;
                             if (res.flag == 1) {
-                                layer.msg(res.content,{icon: 6,time:2000},function(){parent.location.reload();});
+                                layer.msg(res.content,{icon: 6,time:2000},function(){
+                                    parent.location.reload();
+                                });
                             } else {
                                 layer.msg(res.content,{icon: 6,time:2000},function(){location.reload();});
                             }
@@ -175,7 +181,7 @@
                     }
                 });
                 return false;
-            });*/
+            });
             form.render();
         });
 

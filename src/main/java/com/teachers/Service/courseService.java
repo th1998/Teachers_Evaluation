@@ -20,4 +20,8 @@ public class courseService {
     public int delOneCourse(Integer courseId){
         return coursedao.delOneCourse(courseId);
     }
+
+    public int updateCourse(Course course){
+        return coursedao.updateCourse(course);
+    }
 }

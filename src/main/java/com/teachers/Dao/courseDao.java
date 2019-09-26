@@ -13,4 +13,6 @@ public interface courseDao {
     @Delete("delete from course where courseId = #{courseId}")
     public int delOneCourse(Integer courseId);
 
+    @Update("update course set courseName=#{courseName},courseType=#{courseType},classId=#{classId},userId=#{userId},termId=#{termId} where courseId=#{courseId}")
+    public int updateCourse(Course course);
 }

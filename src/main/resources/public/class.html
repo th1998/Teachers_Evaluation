@@ -240,30 +240,33 @@
 
         var ids = idArr.substr(0,idArr.length-1);
         console.log(ids)
+        if(ids == ""){
+          layer.msg('您没有要删除的数据，请选择后再删除！', {icon: 5, time: 2000}, function () {});
+        }else {
+          layer.confirm('确认要删除吗？', function (index) {
+            $.ajax({
+              url: '/delClasses',
+              type: 'get',
+              data: {ids: ids},
+              async: false,
+              success: function (res) {
+                layui.use(['form', 'layer'], function () {
+                  var layer = layui.layer;
+                  if (res.flag == 1) {
+                    layer.msg(res.content, {icon: 6, time: 2000}, function () {
+                      location.reload();
+                    });
+                  } else {
+                    layer.msg(res.content, {icon: 5, time: 2000}, function () {
+                      location.reload();
+                    });
+                  }
+                });
+              }
+            });
 
-        layer.confirm('确认要删除吗？',function(index){
-          $.ajax({
-            url: '/delClasses',
-            type: 'get',
-            data: {ids: ids},
-            async: false,
-            success: function (res) {
-              layui.use(['form','layer'], function() {
-                var layer = layui.layer;
-                if (res.flag == 1) {
-                  layer.msg(res.content, {icon: 6, time: 2000}, function () {
-                    location.reload();
-                  });
-                } else {
-                  layer.msg(res.content, {icon: 5, time: 2000}, function () {
-                    location.reload();
-                  });
-                }
-              });
-            }
           });
-
-        });
+        }
       }
 
 

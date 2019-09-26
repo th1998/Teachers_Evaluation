@@ -48,7 +48,7 @@ public class userController {
             dept = "-1";
         }
         Integer deptId=Integer.valueOf(dept);
-        //  System.out.println(deptId);
+
         //实例化一个user
         User user = new User();
         user.setUserNO(no);

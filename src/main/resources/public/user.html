@@ -29,7 +29,7 @@
 <div class="x-body">
   <div class="layui-row">
     <form class="layui-form layui-col-md12 x-so">
-      <input type="text" name="deptName"  placeholder="请输入需要查询的信息" autocomplete="off" class="layui-input">
+      <input type="text" name="deptName"  placeholder="请输入学号" autocomplete="off" class="layui-input">
       <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
     </form>
   </div>
@@ -50,8 +50,8 @@
       <th width="10%">性别</th>
       <th width="10%">角色类型</th>
       <th width="15%">学院名称</th>
-      <th width="10%">班级代号</th>
-      <th width="10%">操作</th>
+      <th width="15%">班级代号</th>
+      <th width="5%">操作</th>
     </tr>
     </thead>
     <tbody>
@@ -136,9 +136,7 @@
             tr += "<th>"+data.user_viewList[i].className+"</th>";
           }
           tr += "<td class='td-manage'>"+
-                  "<a title='编辑'  onclick=\'x_admin_show(\"编辑\",\"${pageContext.request.contextPath}/question_bank_update?id="+data.user_viewList[i].userId+"\")\'>"+
-                  "<i class='layui-icon'>&#xe63c;</i>"+
-                  "</a>"+
+
                   "<a title='删除'  onclick='del("+data.user_viewList[i].userId+")'>"+
                   "<i class='layui-icon'>&#xe640;</i>"+
                   "</a>"+
@@ -230,30 +228,33 @@
 
     var ids = idArr.substr(0,idArr.length-1);
     console.log(ids)
+    if(ids == ""){
+      layer.msg('您没有要删除的数据，请选择后再删除！', {icon: 5, time: 2000}, function () {});
+    }else {
+      layer.confirm('确认要删除吗？', function (index) {
+        $.ajax({
+          url: '/delUsers',
+          type: 'get',
+          data: {ids: ids},
+          async: false,
+          success: function (res) {
+            layui.use(['form', 'layer'], function () {
+              var layer = layui.layer;
+              if (res.flag == 1) {
+                layer.msg(res.content, {icon: 6, time: 2000}, function () {
+                  location.reload();
+                });
+              } else {
+                layer.msg(res.content, {icon: 5, time: 2000}, function () {
+                  location.reload();
+                });
+              }
+            });
+          }
+        });
 
-    layer.confirm('确认要删除吗？',function(index){
-      $.ajax({
-        url: '/delUsers',
-        type: 'get',
-        data: {ids: ids},
-        async: false,
-        success: function (res) {
-          layui.use(['form','layer'], function() {
-            var layer = layui.layer;
-            if (res.flag == 1) {
-              layer.msg(res.content, {icon: 6, time: 2000}, function () {
-                location.reload();
-              });
-            } else {
-              layer.msg(res.content, {icon: 5, time: 2000}, function () {
-                location.reload();
-              });
-            }
-          });
-        }
       });
-
-    });
+    }
   }
 </script>
 </body>
