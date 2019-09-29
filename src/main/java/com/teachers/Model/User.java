@@ -9,6 +9,7 @@ public class User {
     private Integer roleId;
     private Integer deptId;
     private Integer classId;
+    private Role role;
 
     public Integer getUserId() {
         return userId;
@@ -72,5 +73,13 @@ public class User {
 
     public void setClassId(Integer classId) {
         this.classId = classId;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

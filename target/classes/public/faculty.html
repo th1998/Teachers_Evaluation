@@ -16,7 +16,7 @@
   
   <body>
   <div class="totle" style="display: none;"></div>
-  <div class="panduan" style="display: none;"></div>
+  <div id="panduan"></div>
     <div class="x-nav">
       <span class="layui-breadcrumb">
         <a href="">首页</a>
@@ -29,8 +29,9 @@
     <div class="x-body">
       <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
+
           <input type="text" name="deptName"  id="deptName" placeholder="请输入院系名" autocomplete="off" class="layui-input">
-          <button class="layui-btn" lay-submit  lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+          <button class="layui-btn" type="button" ><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
@@ -57,6 +58,13 @@
 
     </div>
     <script>
+
+      layui.use(['form','layer','laypage','table'], function() {
+        var layer = layui.layer;
+        var form = layui.form;
+        var laypage=layui.laypage;
+        var table = layui.table;
+
       $.ajax({
         type:"get",
         url:"/deptTotle",
@@ -68,49 +76,49 @@
       });
 
 
-      //模糊查询
-      layui.use(['form','layer','laypage','table'], function() {
-          var layer = layui.layer;
-          var form = layui.form;
-          var laypage=layui.laypage;
-          var table = layui.table;
 
 
 
-          /*
 
-          form.on('submit(search)', function (q) {
-             var deptName = $("#deptName").val();
-             $.ajax({
-                 url: '/likeFaculty',
-                 type: 'get',
-                 data: {deptName: deptName},
-                 async: false,
-                 success: function (data) {
-                     var tr = "";
-                     for(var i = 0;i<data.deptList.length;i++){
-                         console.log(data.deptList[i].deptName);
-                         tr += "<tr>";
-                         tr += "<td><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.deptList[i].deptId+"'></td>";
-                         tr += "<td>"+data.deptList[i].deptId+"</td>";
-                         tr += "<td id='"+data.deptList[i].deptId+"'>"+data.deptList[i].deptName+"</td>";
-                         tr += "<td class='td-manage'>"+
-                             "<a title='修改'  onclick='update("+data.deptList[i].deptId+")'>"+
-                             "<i class='layui-icon'>&#xe642;</i>"+
-                             "</a>"+
-                             "<a title='删除'  onclick='del("+data.deptList[i].deptId+")'>"+
-                             "<i class='layui-icon'>&#xe640;</i>"+
-                             "</a>"+
-                             "</td>"
-                         layui.jquery("tbody").html(tr);
-                         layui.use('form', function(){
-                             var  form = layui.form;
-                             form.render("checkbox");
-                         });
-                     }
-                 }
-             });
-          });*/
+
+        //模糊查询
+        $(".layui-btn").on('click',function () {
+          var deptName = $("#deptName").val();
+          $("#page_div").css({display:"none"});
+          $.ajax({
+            url: '/likeFaculty',
+            type: 'get',
+            data: {deptName: deptName},
+            async: false,
+            success: function (data) {
+
+              var tr = "";
+              for(var i = 0;i<data.deptList.length;i++){
+                tr += "<tr>";
+                tr += "<td><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.deptList[i].deptId+"'></td>";
+                tr += "<td>"+data.deptList[i].deptId+"</td>";
+                tr += "<td id='"+data.deptList[i].deptId+"'>"+data.deptList[i].deptName+"</td>";
+                tr += "<td class='td-manage'>"+
+                        "<a title='修改'  onclick='update("+data.deptList[i].deptId+")'>"+
+                        "<i class='layui-icon'>&#xe642;</i>"+
+                        "</a>"+
+                        "<a title='删除'  onclick='del("+data.deptList[i].deptId+")'>"+
+                        "<i class='layui-icon'>&#xe640;</i>"+
+                        "</a>"+
+                        "</td>"
+                layui.jquery("tbody").html(tr);
+                layui.use('form', function(){
+                  var  form = layui.form;
+                  form.render("checkbox");
+                });
+              }
+            }
+          });
+        });
+
+        console.log($("#panduan").html());
+
+
 
 
       var total = $(".totle").html();
@@ -132,15 +140,14 @@
           limit:8,
           theme:'#222222',
           jump: function(obj, first){
-            onShow(obj.curr);
+              onShow(obj.curr);
           }
         });
 
-      });
 
 
 
-      onShow = function(page) {
+     function onShow(page) {
         $.ajax({
           url: '/deptList',
           type: 'get',
@@ -319,6 +326,9 @@
         }
 
       }
+
+      });
+
     </script>
 
   </body>

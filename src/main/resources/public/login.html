@@ -4,7 +4,7 @@
 
 		<meta charset="utf-8" />
 		<title></title>
-		
+        <script type="text/javascript" src="js/jquery-3.4.0.min.js"></script>
 		<style>
 			*{
 				margin: 0;
@@ -99,6 +99,7 @@
 			<div class="wrap">
 				
 			</div>
+            <form >
 			<div class="login_box">
 				<p class="account_login">账号登录</p>
 					<input class="username" type="text" placeholder="用户名"/>
@@ -106,13 +107,35 @@
 					<div style="color: #8D8D8D; margin-left: 25px; margin-top:20px;font-size: 0.875rem;">
 						<input type="radio" name="type" value="学生" title="学生" checked>学生&nbsp;&nbsp;&nbsp;
 						<input type="radio" name="type" value="教师" title="教师" >教师&nbsp;&nbsp;&nbsp;
-						<input type="radio" name="type" value="教师" title="教师" >管理员
+						<input type="radio" name="type" value="管理员" title="教师" >管理员
 					</div>
   
-					<input class="login_btn" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" type="submit"/>
+					<input class="login_btn" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" type="button" onclick="login()"/>
 				<p class="forget_password"><a href="#">忘记密码</a></p>
 			</div>
+            </form>
 		</div>
 	</body>
-	
+	<script>
+        function login(){
+            var userNO = $('.username').val();
+            var userPass = $('.password').val();
+            var roleName = $('input:radio:checked').val();
+            $.ajax({
+                type:"post",
+                url:"/login",
+                dataType:"json",
+                async: false,
+                data:{userNO:userNO,userPass:userPass,roleName:roleName},
+                success:function(res){
+                    //console.log(res[0].role.roleName);
+                    if(res.length == 1){
+                       location.href = "index.html?userId="+res[0].userId;
+                    }
+
+                }
+            });
+            return false;
+        }
+    </script>
 </html>

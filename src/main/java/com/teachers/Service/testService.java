@@ -3,6 +3,7 @@ package com.teachers.Service;
 import com.teachers.Dao.testDao;
 
 import com.teachers.Model.Course;
+import com.teachers.Model.User;
 import com.teachers.Model.pageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,9 @@ public class testService {
     }
     public int courseTotal(){
         return testdao.courseTotal();
+    }
+
+    public List<User> findUserId(Integer userId){
+        return testdao.findUserId(userId);
     }
 }

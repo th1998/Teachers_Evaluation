@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-3.4.0.min.js"></script>
-    <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="test/layui/layui.all.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/xadmin.js"></script>
     <script type="text/javascript" src="js/cookie.js"></script>
 
@@ -35,10 +35,11 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加选项','./option-add.html',500,300)"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="test()"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px"></span>
     </xblock>
-    <table class="layui-table layui-form">
+
+    <table class="layui-table layui-form" id="content_table">
         <thead>
         <tr>
             <th width="10%">
@@ -54,6 +55,7 @@
 
         </tbody>
     </table>
+
     <div id="page_div" style="float: right;"></div>
 </div>
 
@@ -64,7 +66,7 @@
         url:"/optionTotal",
         async: false,
         success:function(res){
-            console.log(res.length);
+
             $(".totle").html(res.length);
         }
     });
@@ -98,7 +100,7 @@
 
     });
 
-    onShow = function(page) {
+    function onShow(page) {
         $.ajax({
             url: '/optionList',
             type: 'get',
@@ -106,24 +108,26 @@
             async: false,
             success: function (data) {
                 var tr = "";
-                for(var i = 0;i<data.optionList.length;i++){
+                for (var i = 0; i < data.optionList.length; i++) {
                     tr += "<tr>";
-                    tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.optionList[i].optionId+"'></th>";
-                    tr += "<th>"+data.optionList[i].optionId+"</th>";
-                    tr += "<th id='"+data.optionList[i].optionId+"'>"+data.optionList[i].optionName+"</th>";
-                    tr += "<th >"+data.optionList[i].optionScore+"</th>";
-                    tr += "<td class='td-manage'>"+
-                        "<a title='编辑'  onclick='update("+data.optionList[i].optionId+")'>"+
-                        "<i class='layui-icon'>&#xe642;</i>"+
-                        "</a>"+
-                        "<a title='删除'  onclick='del("+data.optionList[i].optionId+")'>"+
-                        "<i class='layui-icon'>&#xe640;</i>"+
-                        "</a>"+
+                    tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='" + data.optionList[i].optionId + "'></th>";
+                    tr += "<th>" + data.optionList[i].optionId + "</th>";
+                    tr += "<th id='" + data.optionList[i].optionId + "'>" + data.optionList[i].optionName + "</th>";
+                    tr += "<th >" + data.optionList[i].optionScore + "</th>";
+                    tr += "<td class='td-manage'>" +
+                        "<a title='编辑'  onclick='update(" + data.optionList[i].optionId + ")'>" +
+                        "<i class='layui-icon'>&#xe642;</i>" +
+                        "</a>" +
+                        "<a title='删除'  onclick='del(" + data.optionList[i].optionId + ")'>" +
+                        "<i class='layui-icon'>&#xe640;</i>" +
+                        "</a>" +
                         "</td>"
                     layui.jquery("tbody").html(tr);
-                    layui.use('form', function(){
-                        var  form = layui.form;
+                    layui.use(['form', 'table'], function () {
+                        var form = layui.form;
+                        var table = layui.table;
                         form.render("checkbox");
+
                     });
                 }
             }
@@ -269,6 +273,25 @@
         }
 
     }
+
+        function test(){
+            layui.use(['form','layer'], function() {
+                var form = layui.form;
+                var layer = layui.layer;
+                var table = layui.table;
+
+                layer.open({
+                    title: '添加选项',
+                    type: 2,
+                    area: ["500px","300px"],
+                    shadeClose:true,
+                    content: '/option-add.html',
+                    end:function (index) {
+                      location.reload();
+                    }
+                });
+            })
+        }
 
 
 </script>

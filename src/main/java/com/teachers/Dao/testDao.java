@@ -2,6 +2,7 @@ package com.teachers.Dao;
 
 import com.teachers.Model.Course;
 import com.teachers.Model.Dept;
+import com.teachers.Model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,4 +28,7 @@ public interface testDao {
     public int likeFacultySL(@Param("deptName") String deptName);
 
     public int selectRoleSl(Integer deptId);
+
+    public List<User> login(@Param("userNO") String userNO,@Param("userPass") String userPass,@Param("roleName") String roleName);
+    public List<User> findUserId(Integer userId);
 }

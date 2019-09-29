@@ -142,4 +142,32 @@
             </if>
         </where>
     </select>
+    <!--登录-->
+
+    <resultMap id="user_role" type="com.teachers.Model.User">
+        <id property="userId" column="userId"/>
+        <result property="userNO" column="userNO"/>
+        <result property="userName" column="userName"/>
+        <result property="userPass" column="userPass"/>
+        <result property="userSex" column="userSex"/>
+        <result property="roleId" column="roleId"/>
+        <result property="deptId" column="deptId"/>
+        <result property="classId" column="classId"/>
+        <association property="role" javaType="com.teachers.Model.Role">
+            <id property="roleId" column="roleId"/>
+            <result property="roleName" column="roleName"/>
+        </association>
+    </resultMap>
+    <select id="login" resultMap="user_role">
+        select * from `user` u,role r
+        where userNO = #{userNO}
+        and userPass = #{userPass}
+        and r.roleName = #{roleName}
+    </select>
+
+    <select id="findUserId" resultMap="user_role">
+        select * from `user` u,role r
+        where userId = #{userId}
+        and u.roleId = r.roleId
+    </select>
 </mapper>

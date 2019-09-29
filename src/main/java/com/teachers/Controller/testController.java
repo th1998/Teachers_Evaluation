@@ -3,6 +3,7 @@ package com.teachers.Controller;
 import com.github.pagehelper.PageHelper;
 import com.teachers.Model.Course;
 import com.teachers.Model.ResultMsg;
+import com.teachers.Model.User;
 import com.teachers.Model.pageBean;
 import com.teachers.Service.testService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,6 +183,12 @@ public class testController {
         in.setFlag(f);
         in.setCourseList(courses);
         return in;
+    }
+
+    @RequestMapping("/findUserId")
+    @ResponseBody
+    public List<User> findUserId(Integer userId){
+        return testservice.findUserId(userId);
     }
 
 }
