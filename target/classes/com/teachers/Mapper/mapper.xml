@@ -60,6 +60,14 @@
         </foreach>
     </delete>
 
+    <!-- 批量删除选项组 -->
+    <delete id="delOptionGroup" parameterType="List">
+        delete from option_group where option_groupId in
+        <foreach collection="list" item="arr" open="(" separator="," close=")">
+            #{arr}
+        </foreach>
+    </delete>
+
     <!--课程列表-->
     <resultMap id="Courses" type="com.teachers.Model.Course">
         <id property="courseId" column="courseId"/>

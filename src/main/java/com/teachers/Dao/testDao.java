@@ -19,6 +19,7 @@ public interface testDao {
     public int delCourses(List<Object> list);
     public int delOptions(List<Object> list);
     public int delQuotas(List<Object> list);
+    public int delOptionGroup(List<Object> list);
     public List<Course> findOneCourse(Integer courseId);
     public int delUsers(List<Object> list);
     public List<Course> selectCourse();

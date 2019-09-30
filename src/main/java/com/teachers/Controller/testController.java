@@ -155,6 +155,25 @@ public class testController {
         }
     }
 
+    //批量删除选项组
+    @RequestMapping("/delOptionGroup")
+    @ResponseBody
+    public ResultMsg delOptionGroup(String ids) {
+
+        List<Object> list = new ArrayList<>();
+        String[] str = ids.split(",");
+        for (int i = 0; i < str.length; i++) {
+            list.add(str[i]);
+        }
+
+        int i = testservice.delOptionGroup(list);
+        if(i>0) {
+            return new ResultMsg(1, "删除成功！");
+        }else {
+            return new ResultMsg(0, "删除失败！");
+        }
+    }
+
     //查询单个课程
     @RequestMapping("/findOneCourse")
     @ResponseBody

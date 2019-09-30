@@ -223,7 +223,7 @@
         }else{
             layer.confirm('确认要删除吗？',function(index){
                 $.ajax({
-                    url: '/delOptions',
+                    url: '/delOptionGroup',
                     type: 'get',
                     data: {ids: ids},
                     async: false,

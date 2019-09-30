@@ -32,6 +32,9 @@ public class testService {
     public int delUsers(List<Object> list){ return  testdao.delUsers(list);}
     public int delOptions(List<Object> list){ return  testdao.delOptions(list);}
     public int delQuotas(List<Object> list){ return  testdao.delQuotas(list);}
+    public int delOptionGroup(List<Object> list){
+        return testdao.delOptionGroup(list);
+    }
 
     public List<Course> findOneCourse(Integer courseId){
         return testdao.findOneCourse(courseId);
