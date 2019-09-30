@@ -24,65 +24,81 @@
 
 
             <div class="layui-form-item">
-                <label class="layui-form-label" >问题内容</label>
-                <div class="layui-input-block" >
-                    <input type="text" id="quotaName" name="quotaName" placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required|quotaName">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" >问题权重</label>
-                <div class="layui-input-block" >
-                    <input type="text" id="percentage" name="percentage" placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required|number" >
-                </div>
-            </div>
-            <div class="layui-form-item"  id="options">
                 <label class="layui-form-label" >选项组名称</label>
-                <div class="layui-input-block">
-                    <select name="option_groupId"  id="option_groupId" lay-filter="xx"  lay-verify="required"></select>
+                <div class="layui-input-block" >
+                    <input type="text" id="optionName" name="name" placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required" >
                 </div>
             </div>
+            <div class="layui-form-item"  id="A_box">
+                <label class="layui-form-label" >A选项</label>
+                <div class="layui-input-block">
+                    <select name="A"  id="A" lay-filter="xx"  lay-verify="required"></select>
+                </div>
+            </div>
+            <div class="layui-form-item"  id="B_box">
+                <label class="layui-form-label" >B选项</label>
+                <div class="layui-input-block">
+                    <select name="B"  id="B" lay-filter="xx"  lay-verify="required"></select>
+                </div>
+            </div>
+            <div class="layui-form-item"  id=C_box">
+                <label class="layui-form-label" >C选项</label>
+                <div class="layui-input-block">
+                    <select name="C"  id="C" lay-filter="xx"  lay-verify="required"></select>
+                </div>
+            </div>
+            <div class="layui-form-item"  id="D_box">
+                <label class="layui-form-label" >D选项</label>
+                <div class="layui-input-block">
+                    <select name="D"  id="D" lay-filter="xx"  lay-verify="required"></select>
+                </div>
+            </div>
+
           <div class="layui-form-label">
-              <button  class="layui-btn" lay-filter="addQuota" lay-submit="">
+              <button  class="layui-btn" lay-filter="addOptions" lay-submit="">
                   添加
               </button>
           </div>
       </form>
     </div>
     <script>
-        layui.use(['form','layer'], function(){
+
+        layui.use(['form','layer','table'], function(){
             var form = layui.form;
             var layer = layui.layer;
+            var table = layui.table;
 
-
-            //查询所有的选项组
+            //查询所有的选项
             $.ajax({
                 type:"POST",
-                url:"/option_group",
+                url:"/optionTotal",
                 success:function(data){
                     console.log(data);
                     var html = "<option value=' ' checked></option>";
                     for( var i=0;i<data.length;i++){
-                        html +="<option value="+data[i].option_groupId+">"+data[i].name+"</option>";
+                        html +="<option value="+data[i].optionId+">"+data[i].optionName+"</option>";
                     }
-                    $("#option_groupId").append(html);
+                    $("#A").append(html);
+                    $("#B").append(html);
+                    $("#C").append(html);
+                    $("#D").append(html);
                     form.render('select')
                 }
             });
 
 
-            form.verify({
-                quotaName: function(value){
-                  if(value.length > 50){
-                      return '问题不能超过50个汉字';
-                  }
-                }
-            });
 
-            form.on('submit(addQuota)', function(data) {
+
+
+
+
+
+
+            form.on('submit(addOptions)', function(data) {
                 console.log(data.field);
                 $.ajax({
                     type:"POST",
-                    url:"/addQuota",
+                    url:"/addOptionGroup",
                     data:data.field,
                     success:function(res){
                         if(res.flag == 1){
@@ -91,8 +107,6 @@
                             });
                         }else{
                             layer.msg(res.content, {icon: 2,time: 2000 }, function(){
-                                $("#quotaName").val("");
-                                $("#percentage").val("");
                             });
                         }
                     }
@@ -100,7 +114,6 @@
                 return false;
             });
         });
-
     </script>
 
   </body>

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-3.4.0.min.js"></script>
-    <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="test/layui/layui.all.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/xadmin.js"></script>
     <script type="text/javascript" src="js/cookie.js"></script>
 
@@ -21,7 +21,7 @@
       <span class="layui-breadcrumb">
         <a href="">首页</a>
         <a>
-          <cite>问题管理</cite></a>
+          <cite>选项管理</cite></a>
       </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
@@ -29,29 +29,28 @@
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
-            <input type="text" name="issue"  placeholder="请输入问题" autocomplete="off" class="layui-input">
+            <input type="text" name="quota"  placeholder="请输入想要搜索的选项" autocomplete="off" class="layui-input">
             <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加问题','./quota-add.html',500,350)"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="test2()"><i class="layui-icon"></i>添加选项组</button>
         <span class="x-right" style="line-height:40px"></span>
     </xblock>
-    <table class="layui-table layui-form">
+
+    <table class="layui-table layui-form" id="content_table">
         <thead>
         <tr>
-            <th width="5%">
+            <th width="10%">
                 <input type="checkbox" id="checkall" lay-filter="checkalls"  name="checkall" lay-skin="primary" >
             </th>
-            <th width="5%">ID</th>
-            <th width="10%">评价问题</th>
-            <th width="5%">权重</th>
-            <th width="5%">选项名称</th>
-            <th width="15%">A选项</th>
-            <th width="15%">B选项</th>
-            <th width="15%">C选项</th>
-            <th width="15%">D选项</th>
+            <th width="10%">ID</th>
+            <th width="10%">选项组名称</th>
+            <th width="15%">A</th>
+            <th width="15%">B</th>
+            <th width="15%">C</th>
+            <th width="15%">D</th>
             <th width="10%">操作</th>
         </tr>
         </thead>
@@ -60,6 +59,7 @@
 
         </tbody>
     </table>
+
     <div id="page_div" style="float: right;"></div>
 </div>
 
@@ -67,7 +67,7 @@
 <script>
     $.ajax({
         type:"POST",
-        url:"/qo",
+        url:"/optionGroup",
         async: false,
         success:function(res){
             $(".totle").html(res.length);
@@ -103,76 +103,42 @@
 
     });
 
-    onShow = function(page) {
+    function onShow(page) {
         $.ajax({
-            url: '/qoList',
+            url: '/optionGroupList',
             type: 'get',
             data: {page: page},
             async: false,
             success: function (data) {
-                console.log(data)
+                console.log(data);
                 var tr = "";
-                for(var i = 0;i<data.qoList.length;i++){
+                for (var i = 0; i < data.og_viewList.length; i++) {
                     tr += "<tr>";
-                    tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.qoList[i].quotaId+"'></th>";
-                    tr += "<th>"+data.qoList[i].quotaId+"</th>";
-                    tr += "<th id='"+data.qoList[i].quotaId+"'>"+data.qoList[i].quotaName+"</th>";
-                    tr += "<th>"+data.qoList[i].percentage+"</th>";
-                    tr += "<th>"+data.qoList[i].name+"</th>";
-                    tr += "<th>"+data.qoList[i].nameA+"</th>";
-                    tr += "<th>"+data.qoList[i].nameB+"</th>";
-                    tr += "<th>"+data.qoList[i].nameC+"</th>";
-                    tr += "<th>"+data.qoList[i].nameD+"</th>";
-                    tr += "<td class='td-manage'>"+
-                        "<a title='编辑'  onclick='update("+data.qoList[i].quotaId+")'>"+
-                        "<i class='layui-icon'>&#xe642;</i>"+
-                        "</a>"+
-                        "<a title='删除'  onclick='del("+data.qoList[i].quotaId+")'>"+
-                        "<i class='layui-icon'>&#xe640;</i>"+
-                        "</a>"+
+                    tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='" + data.og_viewList[i].option_groupId + "'></th>";
+                    tr += "<th>" + data.og_viewList[i].option_groupId + "</th>";
+                    tr += "<th>" + data.og_viewList[i].name + "</th>";
+                    tr += "<th>" + data.og_viewList[i].nameA + "</th>";
+                    tr += "<th>" + data.og_viewList[i].nameB + "</th>";
+                    tr += "<th>" + data.og_viewList[i].nameC + "</th>";
+                    tr += "<th>" + data.og_viewList[i].nameD + "</th>";
+                    tr += "<td class='td-manage'>" +
+                        "<a title='删除'  onclick='del(" + data.og_viewList[i].option_groupId + ")'>" +
+                        "<i class='layui-icon'>&#xe640;</i>" +
+                        "</a>" +
                         "</td>"
                     layui.jquery("tbody").html(tr);
-                    layui.use('form', function(){
-                        var  form = layui.form;
+                    layui.use(['form', 'table'], function () {
+                        var form = layui.form;
+                        var table = layui.table;
                         form.render("checkbox");
+
                     });
                 }
             }
         });
     }
 
-    function update(quotaId){
-        var quotaIdName1 = $("#"+quotaId).html();
-        if(!$("#"+quotaId).is('.input')){
-            $("#"+quotaId).addClass('input').html('<input type="text" value="'+ $("#"+quotaId).text() +'" id="'+quotaId+'" name="'+quotaId+'"  autocomplete="off" class="layui-input" style="width: 140px;"/>').find('input').focus().blur(function(){
-                var quotaName=$(this).val();
-                console.log(quotaName);
-                if(quotaIdName1 == quotaName){
-                    layer.alert("放弃修改");
-                }else{
-                    $.ajax({
-                        url: '/updateQuota',
-                        type: 'get',
-                        data: {quotaId:quotaId,quotaName:quotaName},
-                        async: false,
-                        success: function (res) {
-                            layui.use(['form','layer'], function() {
-                                var layer = layui.layer;
-                                if(res.flag == 1){
-                                    layer.msg(res.content,{icon: 6,time:1000},function(){});
-                                }else{
-                                    layer.msg(res.content,{icon: 5,time:1000},function(){});
-                                }
-                            });
-                        }
-                    });
-                }
 
-                $(this).parent().removeClass('input').html($(this).val() || 0);
-            });
-        }
-
-    }
 
     //勾选数据列
     var a=[];
@@ -218,13 +184,13 @@
 
 
     //删除单个班级
-    function del(quotaId) {
-        console.log("id值" + quotaId);
-        layer.confirm('是否删除该评价问题？', {icon: 6}, function (index) {
+    function del(option_groupId) {
+        console.log("id值" + option_groupId);
+        layer.confirm('是否删除该选项组', {icon: 6}, function (index) {
             $.ajax({
-                url: '/delOneQuota',
+                url: '/delOption_group',
                 type: 'get',
-                data: {quotaId: quotaId},
+                data: {option_groupId: option_groupId},
                 async: false,
                 success: function (res) {
                     layui.use(['form','layer'], function() {
@@ -254,15 +220,15 @@
         console.log(ids)
         if(ids == ""){
             layer.msg('您没有要删除的数据，请选择后再删除！', {icon: 5, time: 2000}, function () {});
-        }else {
-            layer.confirm('确认要删除吗？', function (index) {
+        }else{
+            layer.confirm('确认要删除吗？',function(index){
                 $.ajax({
-                    url: '/delQuotas',
+                    url: '/delOptions',
                     type: 'get',
                     data: {ids: ids},
                     async: false,
                     success: function (res) {
-                        layui.use(['form', 'layer'], function () {
+                        layui.use(['form','layer'], function() {
                             var layer = layui.layer;
                             if (res.flag == 1) {
                                 layer.msg(res.content, {icon: 6, time: 2000}, function () {
@@ -279,6 +245,27 @@
 
             });
         }
+
+    }
+
+
+    function test2(){
+        layui.use(['form','layer'], function() {
+            var form = layui.form;
+            var layer = layui.layer;
+            var table = layui.table;
+
+            layer.open({
+                title: '添加选项组',
+                type: 2,
+                area: ["600px","400px"],
+                shadeClose:true,
+                content: '/options-add.html',
+                end:function (index) {
+                    location.reload();
+                }
+            });
+        })
     }
 
 

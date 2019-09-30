@@ -1,10 +1,7 @@
 package com.teachers.Controller;
 
 import com.github.pagehelper.PageHelper;
-import com.teachers.Model.Option;
-import com.teachers.Model.Quota;
-import com.teachers.Model.ResultMsg;
-import com.teachers.Model.pageBean;
+import com.teachers.Model.*;
 import com.teachers.Service.quotaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,11 +24,12 @@ public class quotaController {
      */
     @RequestMapping("/addQuota")
     @ResponseBody
-    public ResultMsg addQuota(String quotaName, Double percentage){
+    public ResultMsg addQuota(String quotaName, Double percentage,Integer option_groupId){
         //System.out.println("quotaname: "+quotaName+"percentage: "+percentage);
         Quota quota = new Quota();
         quota.setQuotaName(quotaName);
         quota.setPercentage(percentage);
+        quota.setOption_groupId(option_groupId);
         int i =quotasrvice.addQuota(quota);
         if(i>0){
             return new ResultMsg(1,"添加成功");
@@ -82,4 +80,26 @@ public class quotaController {
             return new ResultMsg(1,"修改失败");
         }
     }
+
+    //问题选项列表
+    @RequestMapping("/qo")
+    @ResponseBody
+    public List<Qo> qo(){
+        return quotasrvice.qo();
+    }
+
+    @RequestMapping("/qoList")
+    @ResponseBody
+    public pageBean qoList(Integer page){
+        int i = quotasrvice.qoSL();
+        String f = "no";
+        List<Qo> l = quotasrvice.qo(page);
+        pageBean pg = new pageBean();
+        pg.setTotal(i);
+        pg.setFlag(f);
+        pg.setQoList(l);
+        return pg;
+    }
+
+
 }

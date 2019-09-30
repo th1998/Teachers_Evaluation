@@ -4,6 +4,15 @@ public class Quota {
     private Integer quotaId;
     private String quotaName;
     private Double percentage;
+    private Integer option_groupId;
+
+    public Integer getOption_groupId() {
+        return option_groupId;
+    }
+
+    public void setOption_groupId(Integer option_groupId) {
+        this.option_groupId = option_groupId;
+    }
 
     public Integer getQuotaId() {
         return quotaId;

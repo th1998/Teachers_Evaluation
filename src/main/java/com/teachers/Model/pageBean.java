@@ -14,9 +14,33 @@ public class pageBean {
     private List<User_view> user_viewList;
     private List<Option> optionList;
     private List<Quota> quotaList;
+    private List<pj_view> pj_viewList;
+    private List<OptionGroup_view> og_viewList;
+    private List<Qo> qoList;
 
+    public List<Qo> getQoList() {
+        return qoList;
+    }
 
+    public void setQoList(List<Qo> qoList) {
+        this.qoList = qoList;
+    }
 
+    public List<OptionGroup_view> getOg_viewList() {
+        return og_viewList;
+    }
+
+    public void setOg_viewList(List<OptionGroup_view> og_viewList) {
+        this.og_viewList = og_viewList;
+    }
+
+    public List<pj_view> getPj_viewList() {
+        return pj_viewList;
+    }
+
+    public void setPj_viewList(List<pj_view> pj_viewList) {
+        this.pj_viewList = pj_viewList;
+    }
 
     public Integer getTotal() {
         return total;

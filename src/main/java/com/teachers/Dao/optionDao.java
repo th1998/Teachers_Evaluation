@@ -1,6 +1,8 @@
 package com.teachers.Dao;
 
 import com.teachers.Model.Option;
+import com.teachers.Model.OptionGroup;
+import com.teachers.Model.OptionGroup_view;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -32,5 +34,18 @@ public interface optionDao {
     @Delete("delete from quotaoption where optionId = #{optionId}")
     public int delOption(Integer optionId);
 
+    @Delete("delete from option_group where option_groupId = #{option_groupId}")
+    public int delOption_group(Integer option_groupId);
+
+    @Insert("insert into option_group(name,A,B,C,D) values(#{name},#{A},#{B},#{C},#{D})")
+    public int addOptionGroup(OptionGroup og);
+
+    @Select("select * from optionGroup")
+    public List<OptionGroup_view> optionGroup();
+    @Select("select count(*) from optionGroup")
+    public int optionGroupSL();
+
+    @Select("select * from option_group")
+    public List<OptionGroup> option_group();
 
 }

@@ -35,19 +35,25 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加问题','./quota-add.html',500,300)"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="x_admin_show('添加问题','./quota-add.html',500,350)"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px"></span>
     </xblock>
     <table class="layui-table layui-form">
         <thead>
         <tr>
-            <th width="10%">
+            <th width="5%">
                 <input type="checkbox" id="checkall" lay-filter="checkalls"  name="checkall" lay-skin="primary" >
             </th>
-            <th width="10%">ID</th>
-            <th width="60%">评价问题</th>
-            <th width="10%">问题权重</th>
-            <th width="10%">操作</th></tr>
+            <th width="5%">ID</th>
+            <th width="10%">评价问题</th>
+            <th width="5%">权重</th>
+            <th width="5%">选项名称</th>
+            <th width="15%">A选项</th>
+            <th width="15%">B选项</th>
+            <th width="15%">C选项</th>
+            <th width="15%">D选项</th>
+            <th width="10%">操作</th>
+        </tr>
         </thead>
         <tbody>
 
@@ -61,10 +67,9 @@
 <script>
     $.ajax({
         type:"POST",
-        url:"/selectQuota",
+        url:"/qo",
         async: false,
         success:function(res){
-
             $(".totle").html(res.length);
         }
     });
@@ -100,23 +105,29 @@
 
     onShow = function(page) {
         $.ajax({
-            url: '/quotaList',
+            url: '/qoList',
             type: 'get',
             data: {page: page},
             async: false,
             success: function (data) {
+                console.log(data)
                 var tr = "";
-                for(var i = 0;i<data.quotaList.length;i++){
+                for(var i = 0;i<data.qoList.length;i++){
                     tr += "<tr>";
-                    tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.quotaList[i].quotaId+"'></th>";
-                    tr += "<th>"+data.quotaList[i].quotaId+"</th>";
-                    tr += "<th id='"+data.quotaList[i].quotaId+"'>"+data.quotaList[i].quotaName+"</th>";
-                    tr += "<th>"+data.quotaList[i].percentage+"</th>";
+                    tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.qoList[i].quotaId+"'></th>";
+                    tr += "<th>"+data.qoList[i].quotaId+"</th>";
+                    tr += "<th id='"+data.qoList[i].quotaId+"'>"+data.qoList[i].quotaName+"</th>";
+                    tr += "<th>"+data.qoList[i].percentage+"</th>";
+                    tr += "<th>"+data.qoList[i].name+"</th>";
+                    tr += "<th>"+data.qoList[i].nameA+"</th>";
+                    tr += "<th>"+data.qoList[i].nameB+"</th>";
+                    tr += "<th>"+data.qoList[i].nameC+"</th>";
+                    tr += "<th>"+data.qoList[i].nameD+"</th>";
                     tr += "<td class='td-manage'>"+
-                        "<a title='编辑'  onclick='update("+data.quotaList[i].quotaId+")'>"+
+                        "<a title='编辑'  onclick='update("+data.qoList[i].quotaId+")'>"+
                         "<i class='layui-icon'>&#xe642;</i>"+
                         "</a>"+
-                        "<a title='删除'  onclick='del("+data.quotaList[i].quotaId+")'>"+
+                        "<a title='删除'  onclick='del("+data.qoList[i].quotaId+")'>"+
                         "<i class='layui-icon'>&#xe640;</i>"+
                         "</a>"+
                         "</td>"

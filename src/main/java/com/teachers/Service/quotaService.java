@@ -1,6 +1,8 @@
 package com.teachers.Service;
 
+import com.sun.org.apache.regexp.internal.RE;
 import com.teachers.Dao.quotaDao;
+import com.teachers.Model.Qo;
 import com.teachers.Model.Quota;
 
 import org.springframework.stereotype.Service;
@@ -42,5 +44,16 @@ public class quotaService {
 
     public int delOneQuota(Integer quotaId){
         return quotaDao.delOneQuota(quotaId);
+    }
+
+    //问题选项列表
+    public List<Qo> qo(){
+        return quotaDao.qo();
+    }
+    public List<Qo> qo(Integer page){
+        return quotaDao.qo();
+    }
+    public int qoSL(){
+        return quotaDao.qoSL();
     }
 }

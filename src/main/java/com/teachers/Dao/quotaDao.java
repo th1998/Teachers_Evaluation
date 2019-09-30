@@ -1,5 +1,6 @@
 package com.teachers.Dao;
 
+import com.teachers.Model.Qo;
 import com.teachers.Model.Quota;
 import org.apache.ibatis.annotations.*;
 
@@ -17,7 +18,7 @@ public interface quotaDao {
      * Author: ZT
      * Date: 2019/9/26
      */
-    @Insert("insert into quota (quotaName,percentage) values(#{quotaName},#{percentage})")
+    @Insert("insert into quota (quotaName,percentage,option_groupId) values(#{quotaName},#{percentage},#{option_groupId})")
     public int addQuota(Quota quota);
 
     @Select("select * from quota")
@@ -30,5 +31,10 @@ public interface quotaDao {
 
     @Delete("delete from quota where quotaId = #{quotaId}")
     public int delOneQuota(Integer quotaId);
+
+    @Select("select * from qo")
+    public List<Qo> qo();
+    @Select("select count(*) from qo")
+    public int qoSL();
 
 }

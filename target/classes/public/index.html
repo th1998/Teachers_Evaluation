@@ -101,6 +101,12 @@
                                 </a>
                             </li>
                             <li date-refresh="0">
+                                <a _href="./optiongroup.html">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>选项组管理</cite>
+                                </a>
+                            </li>
+                            <li date-refresh="0">
                                 <a _href="./quota.html">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>问题管理</cite>
@@ -116,20 +122,20 @@
             <li id="teacher">
                 <a href="javascript:;">
                     <i class="iconfont">&#xe723;</i>
-                    <cite>老师管理</cite>
+                    <cite>教师功能</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a  id="pj_online">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>老师...</cite>
+                            <cite>在线评教</cite>
                         </a>
                     </li >
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="view_result.html">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>老师...</cite>
+                            <cite>查看成绩</cite>
                         </a>
                     </li >
                 </ul>
@@ -137,14 +143,14 @@
             <li id="student">
                 <a href="javascript:;">
                     <i class="iconfont">&#xe723;</i>
-                    <cite>学生管理</cite>
+                    <cite>学生功能</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="cate.html">
+                        <a _href="spj_online.html">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>学生...</cite>
+                            <cite>在线评教</cite>
                         </a>
                     </li >
                 </ul>
@@ -204,9 +210,11 @@
         async: false,
         data:{userId:userId},
         success:function(res){
-            console.log(res)
+
             $("#username").html(res[0].userName);
+            $("#pj_online").attr("_href","pj_online.html?deptId="+res[0].deptId);
             if(res[0].role.roleName == "教师"){
+                $("#pj_online").attr("_href","pj_online.html?deptId="+res[0].deptId);
                 $("#admin").css({display:"none"})
                 $("#student").css({display:"none"})
             }
