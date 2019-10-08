@@ -4,7 +4,7 @@ public class Qo {
     private Integer quotaId;
     private String quotaName;
     private Double percentage;
-    private Integer option_group;
+    private Integer option_groupId;
     private String name;
     private String NameA;
     private String NameB;
@@ -35,12 +35,12 @@ public class Qo {
         this.percentage = percentage;
     }
 
-    public Integer getOption_group() {
-        return option_group;
+    public Integer getOption_groupId() {
+        return option_groupId;
     }
 
-    public void setOption_group(Integer option_group) {
-        this.option_group = option_group;
+    public void setOption_group(Integer option_groupId) {
+        this.option_groupId = option_groupId;
     }
 
     public String getName() {
