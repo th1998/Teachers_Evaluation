@@ -2,6 +2,7 @@ package com.teachers.Controller;
 
 import com.teachers.Model.Course_user;
 import com.teachers.Model.ResultMsg;
+import com.teachers.Model.Spj_view;
 import com.teachers.Service.course_userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,4 +27,12 @@ public class course_userController {
         List<Course_user> list= course_userService.findCourse_user(termId,deptId);
         return list;
     }
+
+    @RequestMapping("/findStuCourse")
+    @ResponseBody
+    public List<Spj_view> findStuCourse(Integer termId, Integer classId) {
+        List<Spj_view> list= course_userService.findStuCourse(termId,classId);
+        return list;
     }
+
+}

@@ -22,7 +22,7 @@
         .answer > :first-child{
             margin-left: 40px;
         }
-        #test1,#test2{
+        .quota,#test2{
             width: 90%;
             font-size: 14px;
             margin-left: 40px;
@@ -43,91 +43,159 @@
         <form class="layui-form" id="test_box">
 
           <div class="layui-form-item" id="showQuota">
-<!--               <div style="" id="test1">-->
-<!--                   哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈1111111哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈1111111哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈1111111-->
-<!--              </div>-->
-<!--              <div id="t1" style="">-->
-<!--                  <ul class="answer">-->
-<!--                      <li><input type="radio"  name="courseType" value="非常满意" title="非常满意"></li>-->
-<!--                      <li><input type="radio"  name="courseType" value="满意" title="满意" ></li>-->
-<!--                      <li><input type="radio"  name="courseType" value="一般" title="一般" ></li>-->
-<!--                      <li><input type="radio"  name="courseType" value="不满意" title="不满意" ></li>-->
-<!--                  </ul>-->
-<!--              </div>-->
 
-<!--              <div style="" id="test2">-->
-<!--                  哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈啊哈22222-->
-<!--              </div>-->
-<!--              <div id="t2" style="">-->
-<!--                  <ul class="answer">-->
-<!--                      <li><input type="radio"  name="courseType" value="非常满意" title="非常满意"></li>-->
-<!--                      <li><input type="radio"  name="courseType" value="满意" title="满意" ></li>-->
-<!--                      <li><input type="radio"  name="courseType" value="一般" title="一般" ></li>-->
-<!--                      <li><input type="radio"  name="courseType" value="不满意" title="不满意" ></li>-->
-<!--                  </ul>-->
-<!--              </div>-->
          </div>
 
           <div class="layui-form-label">
-              <button  class="layui-btn" lay-filter="addOption" lay-submit="">
+              <button  class="layui-btn" lay-filter="addComment" lay-submit="">
                   提交问卷
               </button>
           </div>
       </form>
     </div>
     <script>
+       //  var url = document.location.toString();//获取url地址
+       //  var urlParmStr = url.slice(url.indexOf('?')+1);//获取问号后所有的字符串
+       //  var str = urlParmStr.split('&');
+       //
+       //  var a = str[0];
+       //  var userId = a.slice(a.indexOf('=')+1);
+       //  console.log(str)
+       //  var b = str[1];
+       // // var courseId = b.slice(b.indexOf('=')+1);
+       //  console.log(urlParmStr)
+       //  var c = str[2];
+       //  var teacherId = c.slice(c.indexOf('=')+1);
+       //  console.log(teacherId)
+       //  var d = str[3];
+       //  var termId = d.slice(d.indexOf('=')+1);
+       //  console.log(termId)
+
+       var search=location.search;
+       console.log(search);
+       //2、如果还想要获取确定的数据，可以解析字符串
+       function parse(search){
+           //从第二个字符开始截取   ，获取到第二个开始后面所有的字符
+           var str=search.substring(1);
+           var result={};
+           //分割字符串  -->产生字符串数组
+           var strs=str.split("&");
+           //遍历数组中的每一个元素
+           strs.forEach(function(v){
+               //伪代码：v="age=18"
+               var keyvalue=v.split("=");
+               var name=keyvalue[0];
+               var value=keyvalue[1];
+               result[name]=value;
+           })
+           return result;
+       }
+        var r=parse(search);
+
+
 
         $.ajax({
             type:"POST",
             url:"/qo",
             async: false,
             success:function(res){
-                console.log(res)
+               // console.log(res)
                 for (var i = 0; i< res.length;i++){
                     var j = i+1;
-                    $("#showQuota").append('<div style="" id="test1">\n' +
+                    $("#showQuota").append('<div style="" id="quota'+res[i].quotaId+'" name="quota" class="quota">\n' +
                         '       '+j+' 、 '+res[i].quotaName+'\n' +
                         '              </div>\n' +
-                        '              <div id="t1" style="">\n' +
+                        '              <div id="option'+i+'" style="">\n' +
                         '                  <ul class="answer">\n' +
-                        '                      <li><input type="radio"  name="courseType" value="'+res[i].nameA+'" title="'+res[i].nameA+'"></li>\n' +
-                        '                      <li><input type="radio"  name="courseType" value="'+res[i].nameB+'" title="'+res[i].nameB+'" ></li>\n' +
-                        '                      <li><input type="radio"  name="courseType" value="'+res[i].nameC+'" title="'+res[i].nameC+'" ></li>\n' +
-                        '                      <li><input type="radio"  name="courseType" value="'+res[i].nameC+'" title="'+res[i].nameC+'" ></li>\n' +
+                        '                      <li><input type="radio"  name="'+res[i].quotaId+'" value="1" title="'+res[i].nameA+'"></li>\n' +
+                        '                      <li><input type="radio"  name="'+res[i].quotaId+'" value="2" title="'+res[i].nameB+'" ></li>\n' +
+                        '                      <li><input type="radio"  name="'+res[i].quotaId+'" value="3" title="'+res[i].nameC+'" ></li>\n' +
+                        '                      <li><input type="radio"  name="'+res[i].quotaId+'" value="4" title="'+res[i].nameD+'" ></li>\n' +
                         '                  </ul>\n' +
                         '              </div>')
                 }
-               /* for (var i = 0; i< res.length;i++){
-                     $('#test_box').append("<div class='layui-form-item' > " +
-                         "<div style=\"font-size: 16px; margin-left: 40px;margin-top: 20px;float: left;display: block;\" id='test"+i+"'>\n" +
-                         "</div>" +
-                         "</div>");
-                     $('#test'+i).append(res[i].quotaName);
-                     $('#test'+i).after("<div class=\"answer_box\"><ul></ul></div>");
-                }
-                $.ajax({
-                    type: "POST",
-                    url: "/optionTotal",
-                    async: false,
-                    success: function (res2) {
-                        console.log(res2);
-                        for (var i = 0; i< res2.length;i++){
-                            $('.answer_box ul').append("<li><input type='radio'  name='courseType' value='"+res2[i].optionName+"' title='"+res2[i].optionName+"'></li>");
-                        }
-                    }
-                });
-*/
+
             }
         });
 
 
+       layui.use(['form', 'layer'], function () {
+           var form = layui.form;
+           var layer = layui.layer;
+       form.on('submit(addComment)', function(data) {
+           var quota = $("div[name='quota']");
+           var p = 10;
+           var score = 0;
+           for (var i = 0; i < quota.length; i++) {
+               var val = $("#option" + i + " input:checked").val();
+               if (val == 1) {
+                   score += p * 1
+               } else if (val == 2) {
+                   score += p * 0.75
+               } else if (val == 3) {
+                   score += p * 0.5
+               } else {
+                   score += p * 0.25
+               }
+
+           }
+           console.log(score)
+           $.ajax({
+               type: "post",
+               url: "/addComment",
+               data: {teacherId: r.teacherId, courseId: r.courseId, userId: r.userId, termId: r.termId, score: score},
+               success: function (res) {
+                   if (res.flag == 1) {
+                           layer.msg(res.content, {icon: 1, time: 2000}, function () {
+                               var index = parent.layer.getFrameIndex(window.name);
+                               parent.layer.close(index);
+                       });
+                   } else {
+                       layer.msg(res.content, {icon: 2, time: 2000}, function () {
+                           $("#className").val("");
+                       });
+                   }
 
 
-        layui.use(['form','layer','table'], function(){
+               }
+           });
+           return false;
+       });
+
+
+       });
+        /*layui.use(['form','layer','table'], function(){
             var form = layui.form;
             var layer = layui.layer;
             var table = layui.table;
-        });
+
+            form.on(' button(addPJ)', function(data){
+                var quota=$("div[name='quota']");
+                var p=10;
+                var score = 0;
+               for (var i = 0;i<quota.length;i++){
+                 var val=  $("#option"+i+" input:checked").val();
+                 console.log(val);
+                    switch (val) {
+                        case 1:
+                            score +=p*1
+                            break;
+                        case 2:
+                            score +=p*0.75
+                            break;
+                        case 3:
+                            score +=p*0.5
+                            break;
+                        case 4:
+                            score +=p*0.25
+                            break;
+
+                    }
+
+               }
+                console.log(score);
+            });
+        });*/
     </script>
 
   </body>

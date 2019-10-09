@@ -133,7 +133,7 @@
                         </a>
                     </li >
                     <li>
-                        <a _href="view_result.html">
+                        <a id=selectScore>
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>查看成绩</cite>
                         </a>
@@ -148,7 +148,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="spj_online.html">
+                        <a id="spj_online" >
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>在线评教</cite>
                         </a>
@@ -213,12 +213,18 @@
 
             $("#username").html(res[0].userName);
             $("#pj_online").attr("_href","pj_online.html?deptId="+res[0].deptId);
+            if(res[0].role.roleName == "管理员"){
+                $("#teacher").css({display:"none"})
+                $("#student").css({display:"none"})
+            }
             if(res[0].role.roleName == "教师"){
-                $("#pj_online").attr("_href","pj_online.html?deptId="+res[0].deptId);
+                $("#pj_online").attr("_href","pj_online.html?deptId="+res[0].deptId+"&userId="+res[0].userId);
+                $("#selectScore").attr("_href","view_result.html?userId="+res[0].userId);
                 $("#admin").css({display:"none"})
                 $("#student").css({display:"none"})
             }
             if(res[0].role.roleName == "学生"){
+                $("#spj_online").attr("_href","spj_online.html?classId="+res[0].classId+"&userId="+res[0].userId);
                 $("#admin").css({display:"none"})
                 $("#teacher").css({display:"none"})
             }
