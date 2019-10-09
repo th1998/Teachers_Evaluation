@@ -105,9 +105,9 @@
 					<input class="username" type="text" placeholder="用户名"/>
 					<input class="password" type="password" placeholder="密码"/>
 					<div style="color: #8D8D8D; margin-left: 25px; margin-top:20px;font-size: 0.875rem;">
-						<input type="radio" name="type" value="学生" title="学生" checked>学生&nbsp;&nbsp;&nbsp;
-						<input type="radio" name="type" value="教师" title="教师" >教师&nbsp;&nbsp;&nbsp;
-						<input type="radio" name="type" value="管理员" title="教师" >管理员
+						<input type="radio" name="type" value="3" title="学生" checked>学生&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="type" value="2" title="教师" >教师&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="type" value="1" title="管理员" >管理员
 					</div>
   
 					<input class="login_btn" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" type="button" onclick="login()"/>
@@ -116,22 +116,31 @@
             </form>
 		</div>
 	</body>
+	<script src="layui/layui.js" charset="utf-8"></script>
 	<script>
         function login(){
             var userNO = $('.username').val();
             var userPass = $('.password').val();
-            var roleName = $('input:radio:checked').val();
+            var roleId = $('input:radio:checked').val();
             $.ajax({
                 type:"post",
                 url:"/login",
                 dataType:"json",
                 async: false,
-                data:{userNO:userNO,userPass:userPass,roleName:roleName},
+                data:{userNO:userNO,userPass:userPass,roleId:roleId},
                 success:function(res){
                     //console.log(res[0].role.roleName);
                     if(res.length == 1){
                        location.href = "index.html?userId="+res[0].userId;
-                    }
+                    }else{
+						layui.use(['form','layer'], function() {
+							var form = layui.form;
+							var layer = layui.layer;
+							layer.msg("登录失败", {icon: 2,time: 2000 }, function(){
+
+							});
+						});
+					}
 
                 }
             });

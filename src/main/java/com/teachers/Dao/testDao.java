@@ -30,6 +30,6 @@ public interface testDao {
 
     public int selectRoleSl(Integer deptId);
 
-    public List<User> login(@Param("userNO") String userNO,@Param("userPass") String userPass,@Param("roleName") String roleName);
+    public List<User> login(@Param("userNO") String userNO,@Param("userPass") String userPass,@Param("roleId") Integer roleId);
     public List<User> findUserId(Integer userId);
 }

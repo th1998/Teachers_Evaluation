@@ -12,7 +12,7 @@ public class loginService {
     @Resource
     testDao testdao;
 
-    public List<User> login(String userNO,String userPass,String roleName){
-        return testdao.login(userNO,userPass,roleName);
+    public List<User> login(String userNO,String userPass,Integer roleId){
+        return testdao.login(userNO,userPass,roleId);
     }
 }

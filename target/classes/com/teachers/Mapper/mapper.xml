@@ -167,10 +167,10 @@
         </association>
     </resultMap>
     <select id="login" resultMap="user_role">
-        select * from `user` u,role r
+        select * from `user` u
         where userNO = #{userNO}
         and userPass = #{userPass}
-        and r.roleName = #{roleName}
+        and roleId = #{roleId}
     </select>
 
     <select id="findUserId" resultMap="user_role">
