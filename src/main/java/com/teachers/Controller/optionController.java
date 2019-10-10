@@ -22,10 +22,9 @@ public class optionController {
 
     @RequestMapping("/addOption")
     @ResponseBody
-    public ResultMsg addOption(String optionName, Integer optionScore){
+    public ResultMsg addOption(String optionName){
         Option option = new Option();
         option.setOptionName(optionName);
-        option.setOptionScore(optionScore);
         int i=optionservice.addOption(option);
         if(i>0){
             return new ResultMsg(1,"添加成功");

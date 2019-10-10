@@ -31,7 +31,7 @@
         <form class="layui-form layui-col-md12 x-so">
 
           <input type="text" name="deptName"  id="deptName" placeholder="请输入院系名" autocomplete="off" class="layui-input">
-          <button class="layui-btn" type="button" ><i class="layui-icon">&#xe615;</i></button>
+          <button class="layui-btn" type="button" id="likeserach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
@@ -82,7 +82,7 @@
 
 
         //模糊查询
-        $(".layui-btn").on('click',function () {
+        $("#likeserach").on('click',function () {
           var deptName = $("#deptName").val();
           $("#page_div").css({display:"none"});
           $.ajax({
@@ -116,7 +116,7 @@
           });
         });
 
-        console.log($("#panduan").html());
+
 
 
 
@@ -178,7 +178,7 @@
         });
       }
         //修改院系
-        function update(deptId){
+         update = function (deptId){
             var deptName1 = $("#"+deptId).html();
           if(!$("#"+deptId).is('.input')){
             $("#"+deptId).addClass('input').html('<input type="text" value="'+ $("#"+deptId).text() +'" id="'+deptId+'" name="'+deptId+'"  autocomplete="off" class="layui-input" style="width: 140px;"/>').find('input').focus().blur(function(){
@@ -217,7 +217,7 @@
 
 
           //删除单个院系
-          function del(deptId) {
+        del = function (deptId) {
               console.log("id值" + deptId);
               layer.confirm('是否删除该院系', {icon: 6}, function (index) {
                   $.ajax({
@@ -285,7 +285,7 @@
       })
 
       //批量删除
-      function delAll(){
+       delAll=function(){
         var idArr=""
         $('input[name="checkd"]').each(function(){
           if($(this).prop("checked")){

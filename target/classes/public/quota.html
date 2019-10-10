@@ -35,7 +35,7 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加问题','./quota-add.html',500,350)"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="x_admin_show('添加问题','./quota-add.html',500,260)"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px"></span>
     </xblock>
     <table class="layui-table layui-form">
@@ -46,8 +46,7 @@
             </th>
             <th width="5%">ID</th>
             <th width="10%">评价问题</th>
-            <th width="5%">权重</th>
-            <th width="5%">选项名称</th>
+            <th width="10%">选项名称</th>
             <th width="15%">A选项</th>
             <th width="15%">B选项</th>
             <th width="15%">C选项</th>
@@ -118,7 +117,6 @@
                     tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='"+data.qoList[i].quotaId+"'></th>";
                     tr += "<th>"+data.qoList[i].quotaId+"</th>";
                     tr += "<th id='"+data.qoList[i].quotaId+"'>"+data.qoList[i].quotaName+"</th>";
-                    tr += "<th>"+data.qoList[i].percentage+"</th>";
                     tr += "<th>"+data.qoList[i].name+"</th>";
                     tr += "<th>"+data.qoList[i].nameA+"</th>";
                     tr += "<th>"+data.qoList[i].nameB+"</th>";

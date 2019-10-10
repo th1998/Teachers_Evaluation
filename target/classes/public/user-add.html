@@ -195,7 +195,9 @@
                  success:function (res) {
                          console.log(res);
                      if(res.flag == 1){
-                         layer.alert(res.content);
+                         layer.msg(res.content, {icon: 1,time: 2000 }, function(){
+                             parent.location.reload();
+                         });
                          $('#class_box').addClass('layui-hide');
                          $('#dept_box').addClass('layui-hide');
                          $('#class').attr("lay-verify","");

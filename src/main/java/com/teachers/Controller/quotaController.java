@@ -24,11 +24,10 @@ public class quotaController {
      */
     @RequestMapping("/addQuota")
     @ResponseBody
-    public ResultMsg addQuota(String quotaName, Double percentage,Integer option_groupId){
-        //System.out.println("quotaname: "+quotaName+"percentage: "+percentage);
+    public ResultMsg addQuota(String quotaName,Integer option_groupId){
+
         Quota quota = new Quota();
         quota.setQuotaName(quotaName);
-        quota.setPercentage(percentage);
         quota.setOption_groupId(option_groupId);
         int i =quotasrvice.addQuota(quota);
         if(i>0){

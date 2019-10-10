@@ -46,8 +46,7 @@
                 <input type="checkbox" id="checkall" lay-filter="checkalls"  name="checkall" lay-skin="primary" >
             </th>
             <th width="10%">ID</th>
-            <th width="60%">选项内容</th>
-            <th width="10%">分数</th>
+            <th width="70%">选项内容</th>
             <th width="10%">操作</th></tr>
         </thead>
         <tbody>
@@ -113,7 +112,6 @@
                     tr += "<th><input type='checkbox'  lay-filter='Id' class='checkd'  name='checkd' lay-skin='primary' value='" + data.optionList[i].optionId + "'></th>";
                     tr += "<th>" + data.optionList[i].optionId + "</th>";
                     tr += "<th id='" + data.optionList[i].optionId + "'>" + data.optionList[i].optionName + "</th>";
-                    tr += "<th >" + data.optionList[i].optionScore + "</th>";
                     tr += "<td class='td-manage'>" +
                         "<a title='编辑'  onclick='update(" + data.optionList[i].optionId + ")'>" +
                         "<i class='layui-icon'>&#xe642;</i>" +
@@ -283,7 +281,7 @@
                 layer.open({
                     title: '添加选项',
                     type: 2,
-                    area: ["500px","300px"],
+                    area: ["500px","200px"],
                     shadeClose:true,
                     content: '/option-add.html',
                     end:function (index) {

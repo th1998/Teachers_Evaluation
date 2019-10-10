@@ -27,13 +27,6 @@
                     <input type="text" id="optionName" name="optionName" placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required" >
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" >选项得分</label>
-                <div class="layui-input-block" >
-                    <input type="text" id="optionScore" name="optionScore" placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required|integerNumber" >
-                </div>
-            </div>
-
           <div class="layui-form-label">
               <button  class="layui-btn" lay-filter="addOption" lay-submit="">
                   添加
@@ -47,9 +40,7 @@
             var form = layui.form;
             var layer = layui.layer;
             var table = layui.table;
-            form.verify({
-                integerNumber:[/^[1-9]\d*$/,"选项得分只能是整数"]
-            });
+
             form.on('submit(addOption)', function(data) {
                 console.log(data.field);
                 $.ajax({
