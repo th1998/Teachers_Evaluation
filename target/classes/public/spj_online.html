@@ -90,11 +90,13 @@
           }
         });
 
+
+
         /**
          * 查询所有评教内容
          */
         form.on('select(termSelect)', function(data){
-          console.log(data.value); //得到被选中的值
+          var termId  = data.value;
           $.ajax({
             type:"POST",
             url:"/findStuCourse",
@@ -109,15 +111,36 @@
 
                 var tr = "";
                 for(var i = 0;i<data.length;i++){
-                  var j = i+1;
-                  tr += "<tr>";
-                  tr += "<th>"+j+"</th>";
-                  tr += "<th>"+data[i].termName+"</th>";
-                  tr += "<th>"+data[i].userName+"</th>";
-                  tr += "<th>"+data[i].courseName+"</th>";
-                  tr += "<th>"+data[i].className+"</th>";
-                  tr += "<th><button type='button' class='layui-btn layui-btn-normal'   onclick='spj("+data[i].courseId+","+data[i].userId+","+data[i].termId+")'>评教</button></th>";
-                  tr += "</tr>";
+                  $.ajax({
+                    type: "POST",
+                    url: "/ban",
+                    async: false,
+                    data: {termId: termId, userId: userId, courseId: data[i].courseId},
+                    success: function (res) {
+                      if(res.flag == 1){
+                        var j = i+1;
+                        tr += "<tr>";
+                        tr += "<th>"+j+"</th>";
+                        tr += "<th>"+data[i].termName+"</th>";
+                        tr += "<th>"+data[i].userName+"</th>";
+                        tr += "<th>"+data[i].courseName+"</th>";
+                        tr += "<th>"+data[i].className+"</th>";
+                        tr += "<th><button type='button' class='layui-btn layui-btn-disabled' >评教</button></th>";
+                        tr += "</tr>";
+                      }else{
+                        var j = i+1;
+                        tr += "<tr>";
+                        tr += "<th>"+j+"</th>";
+                        tr += "<th>"+data[i].termName+"</th>";
+                        tr += "<th>"+data[i].userName+"</th>";
+                        tr += "<th>"+data[i].courseName+"</th>";
+                        tr += "<th>"+data[i].className+"</th>";
+                        tr += "<th><button type='button' class='layui-btn layui-btn-normal'   onclick='spj("+data[i].courseId+","+data[i].userId+","+data[i].termId+")'>评教</button></th>";
+                        tr += "</tr>";
+                      }
+                    }
+                  });
+
                   layui.jquery("tbody").html(tr);
                   layui.use('form', function(){
                     var  form = layui.form;
@@ -131,6 +154,8 @@
 
 
       });
+
+
 
       function spj(courseId,teacherId,termId) {
 

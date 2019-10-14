@@ -2,6 +2,7 @@ package com.teachers.Dao;
 
 import com.teachers.Model.pj_view;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -17,5 +18,8 @@ public interface pj_viewDao {
 
     @Select("SELECT count(*) from pj_view where termStatus=1")
     public int pjCount();
+
+    @Select("select count(*) from comment where userId = #{userId} and termId = #{termId} and courseId = #{courseId}")
+    public int ban(@Param("userId") Integer userId,@Param("termId") Integer termId,@Param("courseId") Integer courseId);
 
 }

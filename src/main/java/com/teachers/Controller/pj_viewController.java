@@ -1,6 +1,7 @@
 package com.teachers.Controller;
 
 import com.github.pagehelper.PageHelper;
+import com.teachers.Model.ResultMsg;
 import com.teachers.Model.pageBean;
 import com.teachers.Model.pj_view;
 import com.teachers.Service.pj_viewService;
@@ -50,5 +51,17 @@ public class pj_viewController {
     @ResponseBody
     public int pjCount(){
         return pjViewService.pjCount();
+    }
+
+    @RequestMapping("/ban")
+    @ResponseBody
+    public ResultMsg ban(Integer userId, Integer termId, Integer courseId){
+        int i = pjViewService.ban(userId,termId,courseId);
+        if(i>0){
+            return new ResultMsg(1,"chonggong");
+        }else{
+            return new ResultMsg(0,"shibai");
+        }
+
     }
     }

@@ -2,6 +2,7 @@ package com.teachers.Service;
 
 import com.teachers.Dao.pj_viewDao;
 import com.teachers.Model.pj_view;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,6 +25,8 @@ public class pj_viewService {
     public int pjCount(){
         return pjViewDao.pjCount();
     }
-
+    public int ban( Integer userId,Integer termId,Integer courseId){
+        return pjViewDao.ban(userId,termId,courseId);
+    }
 
 }
