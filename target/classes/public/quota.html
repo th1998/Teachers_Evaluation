@@ -77,10 +77,10 @@
 
     var total = $(".totle").html();
     var pageNum=1;
-    if(total%8 == 0){
-        var page = total/8;
+    if(total%5 == 0){
+        var page = total/5;
     }else{
-        var page = parseInt(total/8)+1;
+        var page = parseInt(total/5)+1;
     }
     $(".x-right").html("共有数据:"+total+"条 共:"+page+"页");
 
@@ -92,7 +92,7 @@
             elem: 'page_div',
             count: total,
             curr:pageNum,
-            limit:8,
+            limit:5,
             theme:'#222222',
             jump: function(obj, first){
 

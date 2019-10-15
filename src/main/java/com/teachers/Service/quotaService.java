@@ -53,7 +53,5 @@ public class quotaService {
     public List<Qo> qo(Integer page){
         return quotaDao.qo();
     }
-    public int qoSL(){
-        return quotaDao.qoSL();
-    }
+    public int qoaSL(){ return quotaDao.qoSL();}
 }

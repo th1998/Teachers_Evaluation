@@ -13,7 +13,7 @@ import java.util.List;
 @Controller
 public class quotaController {
     @Autowired
-    quotaService quotasrvice;
+    quotaService quotaservice;
 
     /**
      * 功能描述:添加问题
@@ -29,7 +29,7 @@ public class quotaController {
         Quota quota = new Quota();
         quota.setQuotaName(quotaName);
         quota.setOption_groupId(option_groupId);
-        int i =quotasrvice.addQuota(quota);
+        int i =quotaservice.addQuota(quota);
         if(i>0){
             return new ResultMsg(1,"添加成功");
         }
@@ -40,7 +40,7 @@ public class quotaController {
     @RequestMapping("selectQuota")
     @ResponseBody
     public List<Quota> selectQuota(){
-        List<Quota> l = quotasrvice.selectQuota();
+        List<Quota> l = quotaservice.selectQuota();
         return l;
     }
 
@@ -48,8 +48,8 @@ public class quotaController {
     @ResponseBody
     public pageBean quotaList(Integer page){
         PageHelper.startPage(page, 8);
-        List<Quota> quotas= quotasrvice.selectQuota(page);
-        int i = quotasrvice.quotaSL();
+        List<Quota> quotas= quotaservice.selectQuota(page);
+        int i = quotaservice.quotaSL();
         String f = "no";
         pageBean in = new pageBean();
         in.setTotal(i);
@@ -61,7 +61,7 @@ public class quotaController {
     @RequestMapping("/updateQuota")
     @ResponseBody
     public ResultMsg updateQuota(Integer quotaId,String quotaName){
-        int i = quotasrvice.updateQuota(quotaId,quotaName);
+        int i = quotaservice.updateQuota(quotaId,quotaName);
         if(i>0){
             return new ResultMsg(1,"修改成功");
         }else{
@@ -72,7 +72,7 @@ public class quotaController {
     @RequestMapping("/delOneQuota")
     @ResponseBody
     public ResultMsg delOneQuota(Integer quotaId){
-        int i = quotasrvice.delOneQuota(quotaId);
+        int i = quotaservice.delOneQuota(quotaId);
             if(i>0){
             return new ResultMsg(1,"修改成功");
         }else{
@@ -84,15 +84,17 @@ public class quotaController {
     @RequestMapping("/qo")
     @ResponseBody
     public List<Qo> qo(){
-        return quotasrvice.qo();
+        return quotaservice.qo();
     }
 
     @RequestMapping("/qoList")
     @ResponseBody
     public pageBean qoList(Integer page){
-        int i = quotasrvice.qoSL();
+        PageHelper.startPage(page, 5);
+        List<Qo> l = quotaservice.qo(page);
+        int i = quotaservice.quotaSL();
+        System.out.println(i);
         String f = "no";
-        List<Qo> l = quotasrvice.qo(page);
         pageBean pg = new pageBean();
         pg.setTotal(i);
         pg.setFlag(f);

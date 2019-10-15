@@ -129,7 +129,6 @@
                 async: false,
                 data:{userNO:userNO,userPass:userPass,roleId:roleId},
                 success:function(res){
-                    //console.log(res[0].role.roleName);
                     if(res.length == 1){
                        location.href = "index.html?userId="+res[0].userId;
                     }else{
